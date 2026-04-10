@@ -59,7 +59,7 @@
         position: absolute; top: 50%; right: -5vmin; width: 6vmin; height: 4vh; cursor: pointer; z-index: 3; 
         transform-origin: center bottom; transform-style: preserve-3d;
         transform: translateY(-50%) rotateX(-20deg); 
-        transition: transform 0.1s ease-in; /* 加快下壓速度 */
+        transition: transform 0.1s ease-in;
     }
 
     .lrod { 
@@ -138,33 +138,61 @@ const countries=[
   {en:"NEW ZEALAND",zh:"紐西蘭"}
 ];
 
-let spinning=false,spinCount=0,historyQueue=[];
+// 預設前三次順序
+const presetOrder = ["ITALY", "CANADA", "ICELAND"];
+let spinning=false, spinCount=0, historyQueue=[];
 
 function getItemHeight() { return window.innerHeight * 0.2; }
 function getAudio(){if(!window.audioCtx)window.audioCtx=new(window.AudioContext||window.webkitAudioContext)();return window.audioCtx;}
 function playTick(freq,vol){ try{const ctx=getAudio(),o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type='square';o.frequency.setValueAtTime(freq||400,ctx.currentTime);g.gain.setValueAtTime(vol||0.06,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.07);o.start(ctx.currentTime);o.stop(ctx.currentTime+0.07);}catch(e){}}
 function playWin(){ try{const ctx=getAudio();[523,659,784,1047].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type='triangle';const t=ctx.currentTime+i*0.13;o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.15,t+0.04);g.gain.exponentialRampToValueAtTime(0.0001,t+0.28);o.start(t);o.stop(t+0.28);});}catch(e){}}
-function buildReel(final,extra){const track=document.getElementById('reelTrack');track.innerHTML='';const pool=[...countries,...countries].sort(()=>Math.random()-.5);const items=[...pool.slice(0,extra),final,...pool.slice(0,2)];items.forEach(c=>{const d=document.createElement('div');d.className='ritem';d.innerHTML=`<span class="ren">${c.en}</span><span class="rzh">${c.zh}</span>`;track.appendChild(d);});}
+
+function buildReel(final,extra){
+    const track=document.getElementById('reelTrack');
+    track.innerHTML='';
+    const pool=[...countries,...countries].sort(()=>Math.random()-.5);
+    const items=[...pool.slice(0,extra),final,...pool.slice(0,2)];
+    items.forEach(c=>{
+        const d=document.createElement('div');
+        d.className='ritem';
+        d.innerHTML=`<span class="ren">${c.en}</span><span class="rzh">${c.zh}</span>`;
+        track.appendChild(d);
+    });
+}
 
 function spin(){
   if(spinning)return;
-  spinning=true;spinCount++;
+  spinning=true; spinCount++;
   const arm=document.getElementById('leverArm'); arm.classList.add('off');
-  let availablePool = countries.filter(c => !historyQueue.includes(c.en));
-  if(availablePool.length === 0) { historyQueue = []; availablePool = [...countries]; }
-  const final = availablePool[Math.floor(Math.random() * availablePool.length)];
+
+  let final;
+  
+  // 決定本次結果：前三次用預設，之後隨機不重複
+  if (spinCount <= presetOrder.length) {
+    const targetEn = presetOrder[spinCount - 1];
+    final = countries.find(c => c.en === targetEn);
+  } else {
+    let availablePool = countries.filter(c => !historyQueue.includes(c.en));
+    if(availablePool.length === 0) { 
+      historyQueue = []; 
+      availablePool = [...countries]; 
+    }
+    final = availablePool[Math.floor(Math.random() * availablePool.length)];
+  }
+  
   historyQueue.push(final.en);
 
-  // 極速下壓動畫 (0.08s)
+  // 下壓動畫
   arm.style.transition='transform 0.08s ease-in'; 
   arm.style.transform='translateY(-50%) rotateX(80deg)';
 
   setTimeout(()=>{
-    const T=20,track=document.getElementById('reelTrack'),itemH=getItemHeight();
-    buildReel(final,T); track.style.transition='none'; track.style.transform='translateY(0px)';
+    const T=20, track=document.getElementById('reelTrack'), itemH=getItemHeight();
+    buildReel(final,T); 
+    track.style.transition='none'; 
+    track.style.transform='translateY(0px)';
     
-    // 聲音節奏加快
-    let tickInt=30,elapsed=0;
+    let tickInt=30, elapsed=0;
     function doTick(){ 
       playTick(300+Math.random()*200, elapsed>1000?0.1:0.06); 
       tickInt=elapsed<800?30+Math.random()*20:40+elapsed*0.12; 
@@ -173,13 +201,12 @@ function spin(){
     }
     setTimeout(doTick,20);
 
-    // 關鍵：極速動畫階段 (總時長約 1.55s)
     const phases=[
-      {d:300,e:'cubic-bezier(0.5,0,1,1)',y:-(itemH*6)},      // 瞬間加速
-      {d:700,e:'linear',y:-(itemH*(T-5))},                  // 極速滾動
-      {d:400,e:'cubic-bezier(0,0,0.2,1)',y:-(itemH*T)},     // 快速減速
-      {d:150,e:'cubic-bezier(0.34,1.5,0.64,1)',y:-(itemH*T)+(itemH*0.05)}, // 輕微回彈
-      {d:100,e:'ease-in-out',y:-(itemH*T)}                  // 定位
+      {d:300,e:'cubic-bezier(0.5,0,1,1)',y:-(itemH*6)},
+      {d:700,e:'linear',y:-(itemH*(T-5))},
+      {d:400,e:'cubic-bezier(0,0,0.2,1)',y:-(itemH*T)},
+      {d:150,e:'cubic-bezier(0.34,1.5,0.64,1)',y:-(itemH*T)+(itemH*0.05)},
+      {d:100,e:'ease-in-out',y:-(itemH*T)}
     ];
 
     function runPhase(i){
@@ -197,7 +224,9 @@ function spin(){
 
 function endSpin(country, T){
   spinning=false; playWin();
-  const track=document.getElementById('reelTrack'); const items=track.querySelectorAll('.ritem'); if(items[T])items[T].classList.add('hi');
+  const track=document.getElementById('reelTrack'); 
+  const items=track.querySelectorAll('.ritem'); 
+  if(items[T])items[T].classList.add('hi');
   document.getElementById('spinCount').textContent = `已抽 ${spinCount} 次`;
   
   const arm=document.getElementById('leverArm'); 
