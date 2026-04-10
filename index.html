@@ -43,7 +43,7 @@
     .ren { font-family: 'Playfair Display', serif; font-size: 7vmin; font-weight: 900; color: #1a1205; line-height: 1; }
     .rzh { font-family: 'Space Mono', monospace; font-size: 2.5vmin; color: #888; }
     .ritem.hi .ren { color: #8b1800; }
-    .scnt { font-family: 'Space Mono', monospace; font-size: 2.2vmin; color: #c9a030; margin-top: 1vh; }
+    .scnt { font-family: 'Space Mono', monospace; font-size: 2.2vmin; color: #c9a030; margin-top: 1vh; min-height: 1.5em; }
     .lmount { position: absolute; top: 50%; right: -3vmin; width: 3vmin; height: 6vh; background: #8a7010; border-radius: 0 0.8vmin 0.8vmin 0; transform: translateY(-50%); border: 0.2vmin solid #c9a030; z-index: 1; }
     .larm { position: absolute; top: 50%; right: -6vmin; transform-origin: 0 0; cursor: pointer; z-index: 3; }
     .lrod { position: absolute; top: -25vh; left: -1vmin; width: 2vmin; height: 25vh; background: #1c1c1c; border-radius: 0.8vmin; }
@@ -140,8 +140,7 @@ function spin(){
 function endSpin(country, T){
   spinning=false; playWin();
   const track=document.getElementById('reelTrack'); const items=track.querySelectorAll('.ritem'); if(items[T])items[T].classList.add('hi');
-  const remaining = countries.length - historyQueue.length;
-  document.getElementById('spinCount').textContent = `已抽 ${spinCount} 次 (本輪剩餘 ${remaining} 國)`;
+  document.getElementById('spinCount').textContent = `已抽 ${spinCount} 次`;
   const arm=document.getElementById('leverArm'); arm.style.transition='transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; arm.style.transform='rotate(0deg)';
   setTimeout(()=>arm.classList.remove('off'), 200);
 }
