@@ -138,8 +138,8 @@ const countries=[
   {en:"NEW ZEALAND",zh:"紐西蘭"}
 ];
 
-// 預設前三次順序
-const presetOrder = ["ITALY", "CANADA", "ICELAND"];
+// 預設前四次順序：ITALY, NEW ZEALAND, JAPAN, ICELAND
+const presetOrder = ["ITALY", "NEW ZEALAND", "JAPAN", "ICELAND"];
 let spinning=false, spinCount=0, historyQueue=[];
 
 function getItemHeight() { return window.innerHeight * 0.2; }
@@ -167,7 +167,6 @@ function spin(){
 
   let final;
   
-  // 決定本次結果：前三次用預設，之後隨機不重複
   if (spinCount <= presetOrder.length) {
     const targetEn = presetOrder[spinCount - 1];
     final = countries.find(c => c.en === targetEn);
@@ -182,7 +181,6 @@ function spin(){
   
   historyQueue.push(final.en);
 
-  // 下壓動畫
   arm.style.transition='transform 0.08s ease-in'; 
   arm.style.transform='translateY(-50%) rotateX(80deg)';
 
