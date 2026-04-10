@@ -29,8 +29,10 @@
     .cpanel.bp { border-top: 0.4vmin solid #c9a030; }
     .pdeco { font-size: 1.8vmin; color: #c9a030; letter-spacing: 0.8vmin; }
     .pline { border: none; border-top: 0.2vmin solid #5a4808; margin: 0.5vh 10%; width: 80%; }
+    /* CHUNGLI 採用的字體 */
     .ptit { font-family: 'Playfair Display', serif; font-size: 6vmin; font-weight: 900; color: #f2c828; letter-spacing: 0.6vmin; line-height: 1.1; }
     .psub { font-family: 'Playfair Display', serif; font-size: 2.2vmin; font-weight: 700; color: #c9a030; letter-spacing: 1.2vmin; }
+    
     .rsect { flex: 1; padding: 2vmin; background: #162309; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5vmin; }
     .rframe { background: #c9a030; border-radius: 1vmin; padding: 0.6vmin; width: 90%; }
     .rframe-inner { background: #b8860c; border-radius: 0.8vmin; padding: 0.4vmin; }
@@ -41,6 +43,7 @@
     .rtrack { display:flex; flex-direction:column; align-items:center; position:absolute; width:100%; }
     .ritem { height: 20vh; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; width: 100%; text-align: center; }
     .ren { font-family: 'Playfair Display', serif; font-size: 7vmin; font-weight: 900; color: #1a1205; line-height: 1; }
+    /* 基準：紐西蘭採用的大小 (2.5vmin) */
     .rzh { font-family: 'Space Mono', monospace; font-size: 2.5vmin; color: #888; }
     .ritem.hi .ren { color: #8b1800; }
     .scnt { font-family: 'Space Mono', monospace; font-size: 2.2vmin; color: #c9a030; margin-top: 1vh; min-height: 1.5em; }
@@ -51,16 +54,22 @@
     .lstub { position:absolute; top:0; left:-1vmin; width:2vmin; height:3vh; background:#1c1c1c; }
     .larm.off { cursor: default; opacity: .6; }
     
-    /* 修改：署名置中樣式 */
+    /* 修改：署名樣式 - 放大且使用與 CHUNGLI 一樣的字體 */
     .footer {
         position: absolute; 
-        bottom: 20px; 
+        bottom: 15px; /* 稍微上移一點點 */
         left: 50%;
         transform: translateX(-50%);
-        font-family: 'Space Mono', monospace; 
-        font-size: 14px;
+        /* 字體更換為 CHUNGLI 採用的 'Playfair Display'，重設為粗體 */
+        font-family: 'Playfair Display', serif; 
+        font-weight: 900;
+        /* 大小與 '紐西蘭' 採用的 2.5vmin 一致 */
+        font-size: 2.5vmin;
+        /* 顏色與演講會風格匹配 (金色) */
         color: rgba(201, 160, 48, 0.5); 
-        letter-spacing: 3px;
+        letter-spacing: 2px;
+        text-align: center;
+        width: 100%;
     }
     </style>
 </head>
@@ -145,10 +154,7 @@ function spin(){
 function endSpin(country, T){
   spinning=false; playWin();
   const track=document.getElementById('reelTrack'); const items=track.querySelectorAll('.ritem'); if(items[T])items[T].classList.add('hi');
-  
-  // 修改：移除剩餘國家顯示，只保留已抽次數
   document.getElementById('spinCount').textContent = `已抽 ${spinCount} 次`;
-  
   const arm=document.getElementById('leverArm'); arm.style.transition='transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; arm.style.transform='rotate(0deg)';
   setTimeout(()=>arm.classList.remove('off'), 200);
 }
