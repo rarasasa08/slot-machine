@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>Chungli Toastmasters 3D Lever Slot</title>
+    <title>Chungli Toastmasters 3D Real Lever Slot</title>
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,900&family=Space+Mono:wght@400;700&display=swap');
 
@@ -10,23 +10,22 @@
         margin: 0; padding: 0; height: 100vh; width: 100vw;
         display: flex; justify-content: center; align-items: center;
         background-color: #0a2e1f; overflow: hidden; font-family: 'Space Mono', monospace;
-        /* 為了讓 3D 效果顯著，我們在最外層加上透視點 */
-        perspective: 2000px;
+        /* 視覺透視點，數值越小 3D 感越誇張 */
+        perspective: 1500px;
     }
 
     .sm-stage {
         position: relative; height: 66vh; width: 55vw; min-width: 450px;
         display: flex; justify-content: center; align-items: center;
-        /* 確保子元素能維持 3D 空間 */
         transform-style: preserve-3d;
     }
 
-    /* === 拉霸機主體 (維持原樣) === */
+    /* === 拉霸機主體 === */
     .cab {
         position: relative; width: 100%; height: 100%; background: #131d06;
         border: 0.8vmin solid #c9a030; border-radius: 2vmin;
         box-shadow: 0 5vh 10vh rgba(0,0,0,0.8); z-index: 2; display: flex; flex-direction: column;
-        transform: translateZ(0px); /* 確保主體在 3D 空間的基礎平面 */
+        transform: translateZ(0px);
     }
 
     .cab-inner { border: 0.2vmin solid #7a6018; border-radius: 1.5vmin; overflow: hidden; height: 100%; display: flex; flex-direction: column; }
@@ -51,60 +50,56 @@
     .ritem.hi .ren { color: #8b1800; }
     .scnt { font-family: 'Space Mono', monospace; font-size: 2.2vmin; color: #c9a030; margin-top: 1vh; min-height: 1.5em; }
 
-    /* === 修正：三維立體把手結構 === */
+    /* === 3D 把手系統 === */
     .lmount { 
-        position: absolute; top: 50%; right: -3vmin; width: 3vmin; height: 8vh; /* 稍微加高底座 */
-        background: #8a7010; border-radius: 0 0.8vmin 0.8vmin 0; transform: translateY(-50%); 
-        border: 0.2vmin solid #c9a030; z-index: 1; 
-        box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+        position: absolute; top: 50%; right: -3.5vmin; width: 3.5vmin; height: 10vh; 
+        background: linear-gradient(to bottom, #8a7010, #5a4808); 
+        border-radius: 0 1vmin 1vmin 0; transform: translateY(-50%); 
+        border: 0.2vmin solid #c9a030; z-index: 5; 
+        box-shadow: 5px 0 15px rgba(0,0,0,0.5);
     }
 
     .larm { 
         position: absolute; 
-        top: 50%; /* 軸心點在機身中央 */
-        right: -5vmin; /* 稍微往外移一點 */
-        width: 6vmin; /* 增加點寬度以利 3D 視覺 */
-        height: 4vh; /* 這是轉軸基底的高度 */
+        top: 50%; 
+        right: -6vmin; 
+        width: 8vmin;
+        height: 2vh; 
         cursor: pointer; 
-        z-index: 3; 
-        /* 核心修改：設定旋轉軸心為底部的正中央，並開啟 preserve-3d */
-        transform-origin: center bottom;
+        z-index: 10; /* 確保在所有東西最前方 */
+        transform-origin: left center;
         transform-style: preserve-3d;
-        /* 初始狀態：微微向前傾斜，增加立體感 */
-        transform: translateY(-50%) rotateX(-20deg); 
-        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* 初始狀態：微微向後方 */
+        transform: translateY(-50%) rotateY(0deg) rotateX(-25deg); 
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    /* 修正：槓桿主桿 (lrod) 現在是向「上」延伸 */
     .lrod { 
         position: absolute; 
-        bottom: 0; /* 固定在 larm 的底部（轉軸處） */
+        bottom: 0; 
         left: 50%;
         transform: translateX(-50%);
-        width: 1.8vmin; 
-        height: 28vh; /* 槓桿長度 */
-        background: linear-gradient(to right, #333, #1c1c1c 30%, #1c1c1c 70%, #333); /* 加點漸層強化圓柱感 */
-        border-radius: 0.9vmin;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        width: 2vmin; 
+        height: 30vh; 
+        background: linear-gradient(to right, #444, #1a1a1a 40%, #1a1a1a 60%, #444);
+        border-radius: 1vmin;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.4);
     }
 
-    /* 修正：把手球 (lball) 固定在槓桿頂端 */
     .lball { 
         position: absolute; 
-        top: -31vh; /* 在 lrod 頂端再往上一點 */
+        top: -33vh; 
         left: 50%;
-        transform: translateX(-50%);
-        width: 8vmin; height: 8vmin; border-radius: 50%; 
-        /* 強化球體立體感的漸層 */
-        background: radial-gradient(circle at 30% 30%, #ee3311, #c81000 60%, #800000);
-        border: 0.4vmin solid #ee3311;
-        box-shadow: 3px 3px 10px rgba(0,0,0,0.6), inset -2px -2px 5px rgba(0,0,0,0.5);
+        transform: translateX(-50%) translateZ(2vmin); /* 讓球體更突出 */
+        width: 9vmin; height: 9vmin; border-radius: 50%; 
+        background: radial-gradient(circle at 35% 35%, #ff4422, #b30000 70%, #660000);
+        border: 0.3vmin solid #ff5533;
+        box-shadow: 5px 10px 20px rgba(0,0,0,0.5), inset -3px -3px 8px rgba(0,0,0,0.6);
     }
 
-    /* 把手被鎖定時的狀態 */
-    .larm.off { cursor: default; opacity: .8; }
+    /* 修改：移除 opacity 變化，確保全程可見 */
+    .larm.off { cursor: default; }
     
-    /* === 署名樣式 === */
     .footer {
         position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
         font-family: 'Playfair Display', serif; font-weight: 900; font-size: 2.5vmin;
@@ -129,7 +124,7 @@
             <div class="rframe-inner">
               <div class="rwin" id="reelWindow">
                 <div class="sline"></div>
-                <div class="rtrack" id="reelTrack"><div class="ritem"><span class="ren">— — —</span><span class="rzh">拉動前方把手</span></div></div>
+                <div class="rtrack" id="reelTrack"><div class="ritem"><span class="ren">— — —</span><span class="rzh">拉動桿子</span></div></div>
               </div>
             </div>
           </div>
@@ -175,27 +170,42 @@ function buildReel(final,extra){const track=document.getElementById('reelTrack')
 function spin(){
   if(spinning)return;
   spinning=true;spinCount++;
-  const arm=document.getElementById('leverArm'); arm.classList.add('off');
+  const arm=document.getElementById('leverArm'); 
+  arm.classList.add('off');
+
   let availablePool = countries.filter(c => !historyQueue.includes(c.en));
   if(availablePool.length === 0) { historyQueue = []; availablePool = [...countries]; }
   const final = availablePool[Math.floor(Math.random() * availablePool.length)];
   historyQueue.push(final.en);
 
-  // === 修改：3D 往下向前拉的動畫 ===
-  // 從預設的微微後仰 (rotateX(-20deg))，快速翻轉到接近水平面向使用者 (rotateX(80deg))
-  arm.style.transition='transform 0.12s ease-in'; 
-  arm.style.transform='translateY(-50%) rotateX(80deg)';
+  // === 3D 往前拉動動畫 ===
+  arm.style.transition='transform 0.15s ease-in'; 
+  arm.style.transform='translateY(-50%) rotateX(85deg)'; // 幾乎拉平，模擬往前拉的動作
 
   setTimeout(()=>{
     const T=20,track=document.getElementById('reelTrack'),itemH=getItemHeight();
-    buildReel(final,T); track.style.transition='none'; track.style.transform='translateY(0px)';
+    buildReel(final,T); 
+    track.style.transition='none'; track.style.transform='translateY(0px)';
+    
     let tickInt=40,elapsed=0;
     function doTick(){ playTick(300+Math.random()*200, elapsed>1200?0.1:0.06); tickInt=elapsed<1000?35+Math.random()*20:50+elapsed*0.1; elapsed+=tickInt; if(elapsed<1800)setTimeout(doTick,tickInt); }
     setTimeout(doTick,20);
+    
     const phases=[{d:350,e:'cubic-bezier(0.5,0,1,1)',y:-(itemH*6)},{d:800,e:'cubic-bezier(0.1,0,0.3,1)',y:-(itemH*T)},{d:250,e:'cubic-bezier(0.34,1.5,0.64,1)',y:-(itemH*T)+(itemH*0.05)},{d:150,e:'ease-in-out',y:-(itemH*T)}];
-    function runPhase(i){if(i>=phases.length){endSpin(final, T);return;}const p=phases[i];setTimeout(()=>{track.style.transition=`transform ${p.d}ms ${p.e}`;track.style.transform=`translateY(${p.y}px)`;setTimeout(()=>runPhase(i+1),p.d);},10);}
+    function runPhase(i){
+        if(i>=phases.length){
+            endSpin(final, T);
+            return;
+        }
+        const p=phases[i];
+        setTimeout(()=>{
+            track.style.transition=`transform ${p.d}ms ${p.e}`;
+            track.style.transform=`translateY(${p.y}px)`;
+            setTimeout(()=>runPhase(i+1),p.d);
+        },10);
+    }
     requestAnimationFrame(()=>runPhase(0));
-  },120); // 稍微配合把手動畫時間
+  },150);
 }
 
 function endSpin(country, T){
@@ -204,12 +214,11 @@ function endSpin(country, T){
   document.getElementById('spinCount').textContent = `已抽 ${spinCount} 次`;
   
   const arm=document.getElementById('leverArm'); 
-  // === 修改：同步 3D 把手回彈 ===
-  // 使用帶有物理回彈感的貝茲曲線，回到初始微微後仰狀態
-  arm.style.transition='transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.4)'; 
-  arm.style.transform='translateY(-50%) rotateX(-20deg)';
+  // === 3D 回彈動畫 ===
+  arm.style.transition='transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.6)'; 
+  arm.style.transform='translateY(-50%) rotateX(-25deg)';
   
-  setTimeout(()=>arm.classList.remove('off'), 250);
+  setTimeout(()=>arm.classList.remove('off'), 350);
 }
 </script>
 </body>
