@@ -126,12 +126,11 @@
 <div class="footer">By Annzo</div>
 
 <script>
-// 已刪除越南與尚比亞
 const countries=[
   {en:"JAPAN",zh:"日本"}, {en:"KOREA",zh:"韓國"}, {en:"ICELAND",zh:"冰島"},
   {en:"BRAZIL",zh:"巴西"}, {en:"INDIA",zh:"印度"}, {en:"THAILAND",zh:"泰國"},
-  {en:"MALTA",zh:"馬爾他"}, {en:"CUBA",zh:"古巴"},
-  {en:"GREECE",zh:"希臘"}, {en:"USA",zh:"美國"},
+  {en:"VIETNAM",zh:"越南"}, {en:"MALTA",zh:"馬爾他"}, {en:"CUBA",zh:"古巴"},
+  {en:"PHILIPPINES",zh:"菲律賓"}, {en:"GREECE",zh:"希臘"}, {en:"USA",zh:"美國"},
   {en:"CANADA",zh:"加拿大"}, {en:"FRANCE",zh:"法國"}, {en:"ITALY",zh:"義大利"},
   {en:"SWITZERLAND",zh:"瑞士"}, {en:"GERMANY",zh:"德國"}, {en:"UK",zh:"英國"},
   {en:"NETHERLANDS",zh:"荷蘭"}, {en:"TURKEY",zh:"土耳其"}, {en:"MEXICO",zh:"墨西哥"},
@@ -139,8 +138,8 @@ const countries=[
   {en:"NEW ZEALAND",zh:"紐西蘭"}
 ];
 
-// 預設前八次順序：日本、義大利、韓國、紐西蘭、加拿大、冰島、泰國、巴西
-const presetOrder = ["JAPAN", "ITALY", "KOREA", "NEW ZEALAND", "CANADA", "ICELAND", "THAILAND", "BRAZIL"];
+// 預設前四次出現順序：日本、義大利、馬爾他、冰島
+const presetOrder = ["JAPAN", "ITALY", "MALTA", "ICELAND"];
 let spinning=false, spinCount=0, historyQueue=[];
 
 function getItemHeight() { return window.innerHeight * 0.2; }
