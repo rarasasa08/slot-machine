@@ -1,3 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Chungli Toastmasters Ultra Fast Slot</title>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,900&family=Space+Mono:wght@400;700&display=swap');
+
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #0a2e1f; 
+        overflow: hidden;
+        font-family: 'Space Mono', monospace;
+    }
+
+    .sm-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .sm-stage {
+        position: relative;
+        height: 66vh; 
+        width: 55vw; 
+        min-width: 450px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .cab {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: #131d06;
+        border: 0.8vmin solid #c9a030; 
+        border-radius: 2vmin;
+        box-shadow: 0 5vh 10vh rgba(0,0,0,0.8);
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cab-inner {
+        border: 0.2vmin solid #7a6018;
+        border-radius: 1.5vmin;
+        overflow: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cpanel {
+        background:#0b1103;
+        text-align:center;
+        flex: 0 0 22%; 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .cpanel.tp { border-bottom: 0.4vmin solid #c9a030; }
+    .cpanel.bp { border-top: 0.4vmin solid #c9a030; }
+    
+    .pdeco { font-size: 1.8vmin; color: #c9a030; letter-spacing: 0.8vmin; }
+    .pline { border: none; border-top: 0.2vmin solid #5a4808; margin: 0.5vh 10%; width: 80%; }
+    .ptit { font-family: 'Playfair Display', serif; font-size: 6vmin; font-weight: 900; color: #f2c828; letter-spacing: 0.6vmin; line-height: 1.1; }
+    .psub { font-family: 'Playfair Display', serif; font-size: 2.2vmin; font-weight: 700; color: #c9a030; letter-spacing: 1.2vmin; }
+    
+    .rsect {
+        flex: 1;
+        padding: 2vmin;
+        background: #162309;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5vmin;
+    }
+
+    .rframe { background: #c9a030; border-radius: 1vmin; padding: 0.6vmin; width: 90%; }
+    .rframe-inner { background: #b8860c; border-radius: 0.8vmin; padding: 0.4vmin; }
+    
+    .rwin {
+        background: #f0ebd6;
+        height: 20vh;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+    }
+
+    .rwin::before { content:''; position:absolute; top:0; left:0; right:0; height:5vh; background:linear-gradient(to bottom,#f0ebd6,transparent); z-index:2; }
+    .rwin::after { content:''; position:absolute; bottom:0; left:0; right:0; height:5vh; background:linear-gradient(to top,#f0ebd6,transparent); z-index:2; }
+    
+    .sline { position:absolute; left:1vmin; right:1vmin; top:50%; height:0.3vmin; background:#c9a030; transform:translateY(-50%); z-index:3; opacity:.45; }
+    
+    .rtrack { display:flex; flex-direction:column; align-items:center; position:absolute; width:100%; }
+    
+    .ritem {
+        height: 20vh; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .ren { font-family: 'Playfair Display', serif; font-size: 7vmin; font-weight: 900; color: #1a1205; line-height: 1; }
+    .rzh { font-family: 'Space Mono', monospace; font-size: 2.5vmin; color: #888; }
+    .ritem.hi .ren { color: #8b1800; }
+    
+    .scnt { font-family: 'Space Mono', monospace; font-size: 2.2vmin; color: #c9a030; margin-top: 1vh; }
+    
+    .lmount {
+        position: absolute;
+        top: 50%;
+        right: -3vmin; 
+        width: 3vmin;
+        height: 6vh;
+        background: #8a7010;
+        border-radius: 0 0.8vmin 0.8vmin 0;
+        transform: translateY(-50%);
+        border: 0.2vmin solid #c9a030;
+        z-index: 1;
+    }
+
+    .larm {
+        position: absolute;
+        top: 50%;
+        right: -6vmin; 
+        transform-origin: 0 0;
+        cursor: pointer;
+        z-index: 3;
+    }
+
+    .lrod {
+        position: absolute;
+        top: -25vh; 
+        left: -1vmin;
+        width: 2vmin;
+        height: 25vh;
+        background: #1c1c1c;
+        border-radius: 0.8vmin;
+    }
+
+    .lball {
+        position: absolute;
+        top: -32vh; 
+        left: -4vmin;
+        width: 8vmin;
+        height: 8vmin;
+        border-radius: 50%;
+        background: #c81000;
+        border: 0.6vmin solid #ee3311;
+    }
+
+    .lstub { position:absolute; top:0; left:-1vmin; width:2vmin; height:3vh; background:#1c1c1c; }
+    .larm.off { cursor: default; opacity: .6; }
+    </style>
+</head>
+
+<body>
+
+<div class="sm-wrap">
+  <div class="sm-stage">
+    <div class="cab">
+      <div class="cab-inner">
+        <div class="cpanel tp">
+          <div class="pdeco">✦ &nbsp; ✦ &nbsp; ✦</div>
+          <hr class="pline">
+          <div class="ptit">CHUNGLI</div>
+          <div class="psub">TOASTMASTERS</div>
+          <hr class="pline">
+        </div>
+        <div class="rsect">
+          <div class="rframe">
+            <div class="rframe-inner">
+              <div class="rwin" id="reelWindow">
+                <div class="sline"></div>
+                <div class="rtrack" id="reelTrack">
+                  <div class="ritem">
+                    <span class="ren">— — —</span>
+                    <span class="rzh">拉右側把手</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="scnt" id="spinCount"></div>
+        </div>
+        <div class="cpanel bp">
+          <hr class="pline">
+          <div class="ptit">CHUNGLI</div>
+          <div class="psub">TOASTMASTERS</div>
+          <div class="pdeco">✦ &nbsp; ✦ &nbsp; ✦</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lmount"></div>
+    <div class="larm" id="leverArm" onclick="spin()">
+      <div class="lrod"></div>
+      <div class="lball"></div>
+      <div class="lstub"></div>
+    </div>
+  </div>
+</div>
+
 <script>
 const countries=[
   {en:"JAPAN",zh:"日本"},{en:"HONG KONG",zh:"香港"},{en:"SOUTH KOREA",zh:"韓國"},
@@ -62,7 +282,6 @@ function spin(){
   const final=pool[Math.floor(Math.random()*pool.length)];
   lastResult=final;
 
-  // 極速壓下把手
   arm.style.transition='transform 0.08s ease-in';
   arm.style.transform='rotate(115deg)';
 
@@ -82,10 +301,10 @@ function spin(){
     setTimeout(doTick,20);
 
     const phases=[
-      {d:350,e:'cubic-bezier(0.5,0,1,1)',y:-(itemH*6)},      
-      {d:800,e:'cubic-bezier(0.1,0,0.3,1)',y:-(itemH*T)},   
-      {d:250,e:'cubic-bezier(0.34,1.5,0.64,1)',y:-(itemH*T)+(itemH*0.05)}, 
-      {d:150,e:'ease-in-out',y:-(itemH*T)}                  
+      {d:350,e:'cubic-bezier(0.5,0,1,1)',y:-(itemH*6)},
+      {d:800,e:'cubic-bezier(0.1,0,0.3,1)',y:-(itemH*T)},
+      {d:250,e:'cubic-bezier(0.34,1.5,0.64,1)',y:-(itemH*T)+(itemH*0.05)},
+      {d:150,e:'ease-in-out',y:-(itemH*T)}
     ];
 
     function runPhase(i){
@@ -110,10 +329,11 @@ function endSpin(country, T){
   document.getElementById('spinCount').textContent=`已抽 ${spinCount} 次`;
   
   const arm=document.getElementById('leverArm');
-  // 修改：同步把手回彈的速度與最後一個動畫階段 (150ms)
   arm.style.transition='transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
   arm.style.transform='rotate(0deg)';
   
   setTimeout(()=>arm.classList.remove('off'), 200);
 }
 </script>
+</body>
+</html>
