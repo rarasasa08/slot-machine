@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>Chungli Toastmasters Real 3D Lever</title>
+    <title>Chungli Toastmasters Solid 3D Lever</title>
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,900&family=Space+Mono:wght@400;700&display=swap');
 
@@ -10,8 +10,7 @@
         margin: 0; padding: 0; height: 100vh; width: 100vw;
         display: flex; justify-content: center; align-items: center;
         background-color: #0a2e1f; overflow: hidden; font-family: 'Space Mono', monospace;
-        /* 設定強烈的透視感，讓往前往下的動作更明顯 */
-        perspective: 1200px;
+        perspective: 1500px; /* 增加透視距離，減少拉近時的形變 */
     }
 
     .sm-stage {
@@ -25,24 +24,18 @@
         position: relative; width: 100%; height: 100%; background: #131d06;
         border: 0.8vmin solid #c9a030; border-radius: 2vmin;
         box-shadow: 0 5vh 10vh rgba(0,0,0,0.8); z-index: 2; display: flex; flex-direction: column;
-        /* 讓機身稍微退後，確保拉桿往前倒時不會穿模 */
-        transform: translateZ(-5vmin);
     }
 
     .cab-inner { border: 0.2vmin solid #7a6018; border-radius: 1.5vmin; overflow: hidden; height: 100%; display: flex; flex-direction: column; }
     .cpanel { background:#0b1103; text-align:center; flex: 0 0 22%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
     .cpanel.tp { border-bottom: 0.4vmin solid #c9a030; }
     .cpanel.bp { border-top: 0.4vmin solid #c9a030; }
-    .pdeco { font-size: 1.8vmin; color: #c9a030; letter-spacing: 0.8vmin; }
-    .pline { border: none; border-top: 0.2vmin solid #5a4808; margin: 0.5vh 10%; width: 80%; }
     .ptit { font-family: 'Playfair Display', serif; font-size: 6vmin; font-weight: 900; color: #f2c828; letter-spacing: 0.6vmin; line-height: 1.1; }
     .psub { font-family: 'Playfair Display', serif; font-size: 2.2vmin; font-weight: 700; color: #c9a030; letter-spacing: 1.2vmin; }
     .rsect { flex: 1; padding: 2vmin; background: #162309; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5vmin; }
     .rframe { background: #c9a030; border-radius: 1vmin; padding: 0.6vmin; width: 90%; }
     .rframe-inner { background: #b8860c; border-radius: 0.8vmin; padding: 0.4vmin; }
     .rwin { background: #f0ebd6; height: 20vh; overflow: hidden; position: relative; width: 100%; }
-    .rwin::before { content:''; position:absolute; top:0; left:0; right:0; height:5vh; background:linear-gradient(to bottom,#f0ebd6,transparent); z-index:2; }
-    .rwin::after { content:''; position:absolute; bottom:0; left:0; right:0; height:5vh; background:linear-gradient(to top,#f0ebd6,transparent); z-index:2; }
     .sline { position:absolute; left:1vmin; right:1vmin; top:50%; height:0.3vmin; background:#c9a030; transform:translateY(-50%); z-index:3; opacity:.45; }
     .rtrack { display:flex; flex-direction:column; align-items:center; position:absolute; width:100%; }
     .ritem { height: 20vh; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; width: 100%; text-align: center; }
@@ -53,68 +46,70 @@
 
     /* 拉桿底座 */
     .lmount { 
-        position: absolute; top: 50%; right: -3.5vmin; width: 4vmin; height: 10vh; 
-        background: #8a7010; border-radius: 0 1vmin 1vmin 0; transform: translateY(-50%); 
-        border: 0.2vmin solid #c9a030; z-index: 5; 
-        box-shadow: 5px 0 10px rgba(0,0,0,0.5);
+        position: absolute; top: 50%; right: -3.5vmin; width: 4.5vmin; height: 10vh; 
+        background: linear-gradient(to bottom, #8a7010, #c9a030 50%, #5a4808); 
+        border-radius: 0 1.5vmin 1.5vmin 0; transform: translateY(-50%); 
+        border: 0.2vmin solid #c9a030; z-index: 1; 
+        box-shadow: 2px 0 10px rgba(0,0,0,0.5);
     }
 
-    /* 拉桿主體：關鍵 3D 設定 */
+    /* 真實 3D 立體把手 */
     .larm { 
         position: absolute; 
         top: 50%; 
-        right: -5.5vmin; 
-        width: 10vmin;
-        height: 2vh; 
+        right: -6.5vmin; 
+        width: 12vmin;
+        height: 4vh; 
         cursor: pointer; 
-        z-index: 100; /* 確保 z-index 最高 */
+        z-index: 100;
         transform-style: preserve-3d;
-        /* 設定旋轉中心在與底座連接處 */
         transform-origin: left center;
-        /* 初始狀態：稍微往後方仰 */
-        transform: translateY(-50%) rotateY(0deg) rotateX(-30deg); 
-        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* 初始角度微調，增加厚度視覺 */
+        transform: translateY(-50%) rotateY(-2deg) rotateX(-35deg); 
+        transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    /* 桿子 */
+    /* 桿子：強化圓柱質感 */
     .lrod { 
         position: absolute; 
         bottom: 0; 
-        left: 30%;
-        width: 2.2vmin; 
-        height: 32vh; 
-        background: linear-gradient(to right, #444, #1a1a1a 40%, #1a1a1a 60%, #444);
-        border-radius: 1.1vmin;
-        transform-origin: bottom center;
+        left: 0;
+        width: 2.8vmin; /* 稍微加粗 */
+        height: 33vh; 
+        /* 採用多重線性漸層模擬光影在圓柱上的反射 (左至右：反光、高光、主色、深影、反光) */
+        background: linear-gradient(to right, 
+            #333 0%, 
+            #666 20%, 
+            #1a1a1a 45%, 
+            #000 70%, 
+            #222 100%);
+        border-radius: 1.4vmin;
+        box-shadow: 4px 4px 15px rgba(0,0,0,0.4);
     }
 
-    /* 紅球 */
+    /* 球體：強化實心感 */
     .lball { 
         position: absolute; 
-        top: -33vh; 
-        left: 50%;
+        top: -34vh; 
+        left: 1.4vmin;
         transform: translateX(-50%);
-        width: 9.5vmin; height: 9.5vmin; border-radius: 50%; 
-        background: radial-gradient(circle at 35% 35%, #ff4422, #b30000 70%, #660000);
-        border: 0.4vmin solid #ff5533;
-        box-shadow: 5px 10px 20px rgba(0,0,0,0.5), inset -3px -3px 8px rgba(0,0,0,0.6);
+        width: 11vmin; height: 11vmin; border-radius: 50%; 
+        /* 強化的球體漸層：亮點更白，暗部更深邃 */
+        background: radial-gradient(circle at 30% 30%, 
+            #ff7755 0%, 
+            #ff4422 15%, 
+            #b30000 60%, 
+            #330000 100%);
+        border: 0.2vmin solid #ff5533;
+        box-shadow: 10px 20px 40px rgba(0,0,0,0.5), inset -5px -5px 15px rgba(0,0,0,0.7);
     }
 
     .larm.off { cursor: default; }
     
-    /* 署名樣式 */
     .footer {
-        position: absolute; 
-        bottom: 15px; 
-        left: 50%;
-        transform: translateX(-50%);
-        font-family: 'Playfair Display', serif; 
-        font-weight: 900;
-        font-size: 2.5vmin;
-        color: rgba(201, 160, 48, 0.5); 
-        letter-spacing: 3px;
-        text-align: center;
-        width: 100%;
+        position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
+        font-family: 'Playfair Display', serif; font-weight: 900; font-size: 2.5vmin;
+        color: rgba(201, 160, 48, 0.5); letter-spacing: 3px; text-align: center; width: 100%;
     }
     </style>
 </head>
@@ -124,36 +119,29 @@
     <div class="cab">
       <div class="cab-inner">
         <div class="cpanel tp">
-          <div class="pdeco">✦ &nbsp; ✦ &nbsp; ✦</div>
-          <hr class="pline">
           <div class="ptit">CHUNGLI</div>
           <div class="psub">TOASTMASTERS</div>
-          <hr class="pline">
         </div>
         <div class="rsect">
           <div class="rframe">
             <div class="rframe-inner">
               <div class="rwin" id="reelWindow">
                 <div class="sline"></div>
-                <div class="rtrack" id="reelTrack"><div class="ritem"><span class="ren">— — —</span><span class="rzh">拉動前方把手</span></div></div>
+                <div class="rtrack" id="reelTrack"><div class="ritem"><span class="ren">— — —</span><span class="rzh">拉動實體桿子</span></div></div>
               </div>
             </div>
           </div>
           <div class="scnt" id="spinCount"></div>
         </div>
         <div class="cpanel bp">
-          <hr class="pline">
           <div class="ptit">CHUNGLI</div>
           <div class="psub">TOASTMASTERS</div>
-          <div class="pdeco">✦ &nbsp; ✦ &nbsp; ✦</div>
         </div>
       </div>
     </div>
     <div class="lmount"></div>
     <div class="larm" id="leverArm" onclick="spin()">
-      <div class="lrod">
-          <div class="lball"></div>
-      </div>
+      <div class="lrod"><div class="lball"></div></div>
     </div>
 </div>
 <div class="footer">By Annzo</div>
@@ -190,10 +178,9 @@ function spin(){
   const final = availablePool[Math.floor(Math.random() * availablePool.length)];
   historyQueue.push(final.en);
 
-  // === 往前拉下的動作 (從 -30度 到 90度) ===
-  // transition 設為 0.2s，讓拉動過程清晰可見
-  arm.style.transition = 'transform 0.2s ease-in-out'; 
-  arm.style.transform = 'translateY(-50%) rotateX(90deg)';
+  // === 物理下拉動畫 ===
+  arm.style.transition = 'transform 0.18s cubic-bezier(0.45, 0.05, 0.55, 0.95)'; 
+  arm.style.transform = 'translateY(-50%) rotateY(10deg) rotateX(85deg) rotateZ(5deg)';
 
   setTimeout(()=>{
     const T=20,track=document.getElementById('reelTrack'),itemH=getItemHeight();
@@ -206,10 +193,7 @@ function spin(){
     
     const phases=[{d:350,e:'cubic-bezier(0.5,0,1,1)',y:-(itemH*6)},{d:800,e:'cubic-bezier(0.1,0,0.3,1)',y:-(itemH*T)},{d:250,e:'cubic-bezier(0.34,1.5,0.64,1)',y:-(itemH*T)+(itemH*0.05)},{d:150,e:'ease-in-out',y:-(itemH*T)}];
     function runPhase(i){
-        if(i>=phases.length){
-            endSpin(final, T);
-            return;
-        }
+        if(i>=phases.length){ endSpin(final, T); return; }
         const p=phases[i];
         setTimeout(()=>{
             track.style.transition=`transform ${p.d}ms ${p.e}`;
@@ -219,10 +203,12 @@ function spin(){
     }
     requestAnimationFrame(()=>runPhase(0));
 
-    // 當轉盤開始跑的時候，桿子才開始緩慢回彈
-    arm.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; 
-    arm.style.transform = 'translateY(-50%) rotateX(-30deg)';
-  }, 250); // 這裡的延遲要大於拉桿往前的動畫時間
+    // 物理回彈過程
+    setTimeout(()=>{
+        arm.style.transition = 'transform 0.5s cubic-bezier(0.25, 1.25, 0.5, 1)'; 
+        arm.style.transform = 'translateY(-50%) rotateY(-2deg) rotateX(-35deg) rotateZ(0deg)';
+    }, 120);
+  }, 200);
 }
 
 function endSpin(country, T){
