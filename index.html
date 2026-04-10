@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>Chungli Toastmasters Calibrated 3D Slot</title>
+    <title>Chungli Toastmasters Perfect 3D Slot</title>
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,900&family=Space+Mono:wght@400;700&display=swap');
 
@@ -10,7 +10,7 @@
         margin: 0; padding: 0; height: 100vh; width: 100vw;
         display: flex; justify-content: center; align-items: center;
         background-color: #0a2e1f; overflow: hidden; font-family: 'Space Mono', monospace;
-        perspective: 1200px;
+        perspective: 1500px;
     }
 
     .sm-stage {
@@ -44,20 +44,20 @@
     .ritem.hi .ren { color: #8b1800; }
     .scnt { font-family: 'Space Mono', monospace; font-size: 2.2vmin; color: #c9a030; margin-top: 1vh; min-height: 1.5em; }
 
-    /* 拉桿底座：固定位置 */
+    /* 拉桿底座：固定在機台右側 */
     .lmount { 
-        position: absolute; top: 50%; right: -3.5vmin; width: 4.5vmin; height: 10vh; 
-        background: linear-gradient(to bottom, #8a7010, #c9a030 50%, #5a4808); 
+        position: absolute; top: 50%; right: -4vmin; width: 4vmin; height: 10vh; 
+        background: linear-gradient(to right, #8a7010, #c9a030 50%, #5a4808); 
         border-radius: 0 1.5vmin 1.5vmin 0; transform: translateY(-50%); 
         border: 0.2vmin solid #c9a030; z-index: 10; 
     }
 
-    /* 把手轉軸容器：確保轉軸點在底座邊緣 */
-    .larm-container {
+    /* 桿子旋轉主體 */
+    .lever-system {
         position: absolute;
         top: 50%;
-        right: -4.5vmin; /* 緊貼底座邊緣 */
-        width: 1px; height: 1px; /* 僅作為轉軸點 */
+        right: -4vmin; /* 軸心對準底座邊緣 */
+        width: 1px; height: 1px;
         z-index: 100;
         transform-style: preserve-3d;
     }
@@ -65,38 +65,36 @@
     .larm { 
         position: absolute; 
         left: 0; top: 0;
-        width: 30vmin; /* 桿子高度範圍 */
-        height: 1px;
         cursor: pointer; 
         transform-style: preserve-3d;
-        transform-origin: left center; /* 轉軸設定在最左側（連接底座處） */
-        transform: rotateY(0deg) rotateX(-35deg); 
+        transform-origin: left center; /* 關鍵：旋轉點鎖定在底座處 */
+        transform: rotateX(-30deg); /* 初始後仰角度 */
         transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    /* 桿子本體 */
+    /* 黑桿子：現在它是 larm 的子元素 */
     .lrod { 
         position: absolute; 
-        left: 0; top: 50%;
+        left: 0; 
+        top: 50%;
         transform: translateY(-50%);
-        width: 30vh; /* 實際長度 */
-        height: 2.8vmin; /* 桿子粗細 */
-        background: linear-gradient(to bottom, 
-            #333 0%, #666 20%, #1a1a1a 45%, #000 70%, #222 100%);
-        border-radius: 1.4vmin;
-        box-shadow: 4px 4px 15px rgba(0,0,0,0.4);
+        width: 30vh; /* 桿子長度 */
+        height: 2.5vmin; /* 桿子粗細 */
+        background: linear-gradient(to bottom, #444, #1a1a1a 45%, #000 70%, #222);
+        border-radius: 1.25vmin;
+        box-shadow: 4px 4px 10px rgba(0,0,0,0.4);
     }
 
-    /* 球體 */
+    /* 紅色球：現在它是 lrod 的子元素，確保連在一起 */
     .lball { 
         position: absolute; 
-        right: -5vmin; /* 放在桿子末端 */
+        right: -5.5vmin; /* 緊貼在桿子末端 */
         top: 50%;
         transform: translateY(-50%);
         width: 11vmin; height: 11vmin; border-radius: 50%; 
-        background: radial-gradient(circle at 30% 30%, #ff7755 0%, #ff4422 15%, #b30000 60%, #330000 100%);
+        background: radial-gradient(circle at 30% 30%, #ff7755, #ff4422 15%, #b30000 60%, #330000);
         border: 0.2vmin solid #ff5533;
-        box-shadow: 10px 20px 40px rgba(0,0,0,0.5), inset -5px -5px 15px rgba(0,0,0,0.7);
+        box-shadow: 10px 15px 30px rgba(0,0,0,0.5), inset -5px -5px 15px rgba(0,0,0,0.6);
     }
 
     .larm.off { cursor: default; }
@@ -136,7 +134,7 @@
     </div>
 
     <div class="lmount"></div>
-    <div class="larm-container">
+    <div class="lever-system">
         <div class="larm" id="leverArm" onclick="spin()">
             <div class="lrod">
                 <div class="lball"></div>
@@ -178,9 +176,9 @@ function spin(){
   const final = availablePool[Math.floor(Math.random() * availablePool.length)];
   historyQueue.push(final.en);
 
-  // === 改進：真正的往前下拉動作 ===
-  arm.style.transition = 'transform 0.18s cubic-bezier(0.45, 0.05, 0.55, 0.95)'; 
-  arm.style.transform = 'rotateY(15deg) rotateX(80deg) rotateZ(5deg)';
+  // === 改進：往前下拉動作 ===
+  arm.style.transition = 'transform 0.2s cubic-bezier(0.45, 0, 0.55, 1)'; 
+  arm.style.transform = 'rotateY(20deg) rotateX(85deg)'; 
 
   setTimeout(()=>{
     const T=20,track=document.getElementById('reelTrack'),itemH=getItemHeight();
@@ -203,12 +201,12 @@ function spin(){
     }
     requestAnimationFrame(()=>runPhase(0));
 
-    // 回彈到初始立體角度
+    // 彈回原位
     setTimeout(()=>{
         arm.style.transition = 'transform 0.5s cubic-bezier(0.25, 1.25, 0.5, 1)'; 
-        arm.style.transform = 'rotateY(0deg) rotateX(-35deg)';
-    }, 120);
-  }, 200);
+        arm.style.transform = 'rotateX(-30deg)';
+    }, 150);
+  }, 220);
 }
 
 function endSpin(country, T){
