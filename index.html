@@ -166,4 +166,174 @@
         border: 0.6vmin solid #ee3311;
     }
 
-    .lstub { position:absolute; top:0;
+    .lstub { position:absolute; top:0; left:-1vmin; width:2vmin; height:3vh; background:#1c1c1c; }
+    .larm.off { cursor: default; opacity: .6; }
+    </style>
+</head>
+
+<body>
+
+<div class="sm-wrap">
+  <div class="sm-stage">
+    <div class="cab">
+      <div class="cab-inner">
+        <div class="cpanel tp">
+          <div class="pdeco">✦ &nbsp; ✦ &nbsp; ✦</div>
+          <hr class="pline">
+          <div class="ptit">CHUNGLI</div>
+          <div class="psub">TOASTMASTERS</div>
+          <hr class="pline">
+        </div>
+        <div class="rsect">
+          <div class="rframe">
+            <div class="rframe-inner">
+              <div class="rwin" id="reelWindow">
+                <div class="sline"></div>
+                <div class="rtrack" id="reelTrack">
+                  <div class="ritem">
+                    <span class="ren">— — —</span>
+                    <span class="rzh">拉右側把手</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="scnt" id="spinCount"></div>
+        </div>
+        <div class="cpanel bp">
+          <hr class="pline">
+          <div class="ptit">CHUNGLI</div>
+          <div class="psub">TOASTMASTERS</div>
+          <div class="pdeco">✦ &nbsp; ✦ &nbsp; ✦</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lmount"></div>
+    <div class="larm" id="leverArm" onclick="spin()">
+      <div class="lrod"></div>
+      <div class="lball"></div>
+      <div class="lstub"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const countries=[
+  {en:"JAPAN",zh:"日本"},{en:"HONG KONG",zh:"香港"},{en:"SOUTH KOREA",zh:"韓國"},
+  {en:"CANADA",zh:"加拿大"},{en:"THAILAND",zh:"泰國"},{en:"VIETNAM",zh:"越南"},
+  {en:"MALAYSIA",zh:"馬來西亞"},{en:"INDONESIA",zh:"印尼"},{en:"PHILIPPINES",zh:"菲律賓"},
+  {en:"FRANCE",zh:"法國"},{en:"ITALY",zh:"義大利"},{en:"SPAIN",zh:"西班牙"},
+  {en:"SWITZERLAND",zh:"瑞士"},{en:"NETHERLANDS",zh:"荷蘭"},{en:"TURKEY",zh:"土耳其"},
+  {en:"EGYPT",zh:"埃及"},{en:"SOUTH AFRICA",zh:"南非"},{en:"GERMANY",zh:"德國"},
+  {en:"AUSTRALIA",zh:"澳洲"},{en:"NEW ZEALAND",zh:"紐西蘭"},{en:"USA",zh:"美國"},
+  {en:"UK",zh:"英國"},{en:"CZECH",zh:"捷克"},{en:"KENYA",zh:"肯亞"},
+];
+
+let spinning=false,spinCount=0,lastResult=null,audioCtx=null;
+
+function getItemHeight() { return window.innerHeight * 0.2; }
+function getAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
+
+function playTick(freq,vol){
+  try{const ctx=getAudio(),o=ctx.createOscillator(),g=ctx.createGain();
+  o.connect(g);g.connect(ctx.destination);
+  o.type='square';o.frequency.setValueAtTime(freq||400,ctx.currentTime);
+  g.gain.setValueAtTime(vol||0.06,ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.07);
+  o.start(ctx.currentTime);o.stop(ctx.currentTime+0.07);}catch(e){}
+}
+
+function playWin(){
+  try{const ctx=getAudio();
+  [523,659,784,1047].forEach((f,i)=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);o.type='triangle';
+    const t=ctx.currentTime+i*0.13;
+    o.frequency.setValueAtTime(f,t);
+    g.gain.setValueAtTime(0,t);
+    g.gain.linearRampToValueAtTime(0.15,t+0.04);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+0.28);
+    o.start(t);o.stop(t+0.28);
+  });}catch(e){}
+}
+
+function buildReel(final,extra){
+  const track=document.getElementById('reelTrack');
+  track.innerHTML='';
+  const pool=[...countries,...countries].sort(()=>Math.random()-.5);
+  const items=[...pool.slice(0,extra),final,...pool.slice(0,2)];
+  items.forEach(c=>{
+    const d=document.createElement('div');
+    d.className='ritem';
+    d.innerHTML=`<span class="ren">${c.en}</span><span class="rzh">${c.zh}</span>`;
+    track.appendChild(d);
+  });
+}
+
+function spin(){
+  if(spinning)return;
+  spinning=true;spinCount++;
+  const arm=document.getElementById('leverArm');
+  arm.classList.add('off');
+
+  let pool=[...countries];
+  if(lastResult&&pool.length>1)pool=pool.filter(c=>c.en!==lastResult.en);
+  const final=pool[Math.floor(Math.random()*pool.length)];
+  lastResult=final;
+
+  arm.style.transition='transform 0.08s ease-in';
+  arm.style.transform='rotate(115deg)';
+
+  setTimeout(()=>{
+    const T=20,track=document.getElementById('reelTrack'),itemH=getItemHeight();
+    buildReel(final,T);
+    track.style.transition='none';
+    track.style.transform='translateY(0px)';
+
+    let tickInt=40,elapsed=0;
+    function doTick(){
+      playTick(300+Math.random()*200, elapsed>1200?0.1:0.06);
+      tickInt=elapsed<1000?35+Math.random()*20:50+elapsed*0.1;
+      elapsed+=tickInt;
+      if(elapsed<1800)setTimeout(doTick,tickInt);
+    }
+    setTimeout(doTick,20);
+
+    const phases=[
+      {d:350,e:'cubic-bezier(0.5,0,1,1)',y:-(itemH*6)},
+      {d:800,e:'cubic-bezier(0.1,0,0.3,1)',y:-(itemH*T)},
+      {d:250,e:'cubic-bezier(0.34,1.5,0.64,1)',y:-(itemH*T)+(itemH*0.05)},
+      {d:100,e:'ease-in-out',y:-(itemH*T)}
+    ];
+
+    function runPhase(i){
+      if(i>=phases.length){endSpin(final, T);return;}
+      const p=phases[i];
+      setTimeout(()=>{
+        track.style.transition=`transform ${p.d}ms ${p.e}`;
+        track.style.transform=`translateY(${p.y}px)`;
+        setTimeout(()=>runPhase(i+1),p.d);
+      },10);
+    }
+    requestAnimationFrame(()=>runPhase(0));
+  },100);
+}
+
+function endSpin(country, T){
+  spinning=false;
+  playWin();
+  const track=document.getElementById('reelTrack');
+  const items=track.querySelectorAll('.ritem');
+  if(items[T])items[T].classList.add('hi');
+  document.getElementById('spinCount').textContent=`已抽 ${spinCount} 次`;
+  const arm=document.getElementById('leverArm');
+  setTimeout(()=>{
+    arm.style.transition='transform 0.3s cubic-bezier(0.34,1.5,0.64,1)';
+    arm.style.transform='rotate(0deg)';
+    setTimeout(()=>arm.classList.remove('off'),300);
+  },200);
+}
+</script>
+</body>
+</html>
