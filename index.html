@@ -2,281 +2,152 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>Chungli Toastmasters Slot Machine (Large)</title>
+    <title>Chungli Toastmasters Super Slot Machine (2/3 Scale)</title>
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,900&family=Space+Mono:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,700;0,900;1,900&family=Space+Mono:wght@400;700&display=swap');
 
     body {
         margin: 0;
         padding: 0;
+        /* 確保 body 佔滿全螢幕，以便內部元件計算百分比 */
         height: 100vh;
         width: 100vw;
         display: flex;
         justify-content: center;
         align-items: center;
-        /* 修改：更換為純墨綠色背景 */
         background-color: #0a2e1f; 
         overflow: hidden;
         font-family: 'Space Mono', monospace;
+        /* 設定基準字體大小，以便內部使用 rem 計算 */
+        font-size: 16px; 
     }
 
-    /* 隱藏標題文字 */
     .sr-only {
         display: none;
     }
 
+    /* 最外層容器：確保絕對置中 */
     .sm-wrap {
         display: flex;
         justify-content: center;
         align-items: center;
-        /* 增加一點邊距確保在手機上不貼邊 */
-        padding: 20px;
+        width: 100%;
+        height: 100%;
     }
 
-    /* 修改：放大 Stage 尺寸 */
+    /* 遊戲舞台 */
     .sm-stage {
         position: relative;
-        width: 615px; /* 原 410px * 1.5 */
-        height: 600px; /* 原 400px * 1.5 */
+        /* 修改：Stage 的高度設為視窗高度的 66%，即 2/3 */
+        height: 66vh; 
+        /* 修改：寬度也設定為相對比例，例如視窗寬度的一半 */
+        width: 50vw; 
+        min-width: 400px; /* 設定最小寬度預防變形 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    /* 修改：放大 Cabinet 尺寸 */
+    /* 拉霸機主體外殼 (Cabinet) */
     .cab {
-        position: absolute;
-        top: 90px; /* 原 60px * 1.5 */
-        left: 0;
-        width: 378px; /* 原 252px * 1.5 */
+        position: relative;
+        /* 修改：外殼填滿 Stage 的高度和寬度 */
+        width: 100%;
+        height: 100%;
         background: #131d06;
-        border: 4.5px solid #c9a030; /* 邊框也同步加粗 */
-        border-radius: 15px 15px 10px 10px;
+        /* 修改：邊框粗細也改為相對單位 */
+        border: 0.8vmin solid #c9a030; 
+        border-radius: 2vmin 2vmin 1.5vmin 1.5vmin;
         overflow: hidden;
-        /* 強化立體陰影 */
-        box-shadow: 0 45px 90px rgba(0,0,0,0.8);
+        /* 修改：加強陰影範圍以配合巨型機台 */
+        box-shadow: 0 5vh 10vh rgba(0,0,0,0.8);
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
     }
 
-    .cab-inner{border:1.5px solid #7a6018;border-radius:10px 10px 6px 6px;overflow:hidden;}
-    .cpanel{background:#0b1103;text-align:center;}
-    
-    /* 修改：調整 Panel 內距 */
-    .cpanel.tp{padding:12px 15px 10px;border-bottom:3px solid #c9a030;}
-    .cpanel.bp{padding:10px 15px 15px;border-top:3px solid #c9a030;}
-    
-    /* 修改：放大字體與間距 */
-    .pdeco{font-family:'Space Mono',monospace;font-size:13px;color:#c9a030;letter-spacing:6px;line-height:1.8;}
-    .pline{border:none;border-top:1.5px solid #5a4808;margin:4.5px 18px;}
-    .ptit{font-family:'Playfair Display',serif;font-size:39px;font-weight:900;color:#f2c828;letter-spacing:4.5px;line-height:1.05;}
-    .psub{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;font-style:italic;color:#c9a030;letter-spacing:7.5px;}
-    
-    /* 修改：調整轉盤區域 */
-    .rsect{padding:18px 21px;background:#162309;display:flex;flex-direction:column;align-items:center;gap:12px;}
-    .rframe{background:#c9a030;border-radius:7.5px;padding:4.5px;width:100%;}
-    .rframe-inner{background:#b8860c;border-radius:4.5px;padding:3px;}
-    
-    /* 修改：放大轉盤視窗高度 */
-    .rwin{background:#f0ebd6;border-radius:3px;height:135px;overflow:hidden;position:relative;width:100%;}
-    .rwin::before{content:'';position:absolute;top:0;left:0;right:0;height:33px;background:linear-gradient(to bottom,#f0ebd6,transparent);z-index:2;pointer-events:none;}
-    .rwin::after{content:'';position:absolute;bottom:0;left:0;right:0;height:33px;background:linear-gradient(to top,#f0ebd6,transparent);z-index:2;pointer-events:none;}
-    .sline{position:absolute;left:9px;right:9px;top:50%;height:1.5px;background:#c9a030;transform:translateY(-50%);z-index:3;opacity:.45;}
-    .rtrack{display:flex;flex-direction:column;align-items:center;position:absolute;width:100%;}
-    
-    /* 修改：調整轉盤項目高度與字體 */
-    .ritem{height:135px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;width:100%;text-align:center;gap:3px;}
-    .ren{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:#1a1205;line-height:1;}
-    .rzh{font-family:'Space Mono',monospace;font-size:15px;color:#888;letter-spacing:1.5px;}
-    .ritem.hi .ren{color:#8b1800;}
-    .ritem.hi .rzh{color:#b8960c;}
-    
-    .scnt{font-family:'Space Mono',monospace;font-size:15px;color:#c9a030;letter-spacing:3px;min-height:21px;margin-top: 10px;}
-    
-    /* 修改：同步放大把手與基座 */
-    .lmount{position:absolute;top:315px;left:373px;width:21px;height:39px;background:#8a7010;border-radius:0 4.5px 4.5px 0;transform:translateY(-50%);border-right:3px solid #c9a030;border-top:1.5px solid #c9a030;border-bottom:1.5px solid #c9a030;}
-    .larm{position:absolute;top:315px;left:391px;transform-origin:0 0;transform:rotate(0deg);transition:transform 0.15s ease-in;cursor:pointer;}
-    .lrod{position:absolute;top:-192px;left:-6px;width:12px;height:192px;background:#1c1c1c;border-radius:4.5px 4.5px 0 0;}
-    .lball{position:absolute;top:-246px;left:-25px;width:51px;height:51px;border-radius:50%;background:#c81000;border:4.5px solid #ee3311;transition:background .1s;}
-    .lstub{position:absolute;top:0;left:-6px;width:12px;height:21px;background:#1c1c1c;border-radius:0 0 4.5px 4.5px;}
-    .larm:not(.off):hover .lball{background:#dd1500;}
-    .larm.off{cursor:default;opacity:.6;}
-    
-    /* 新增：RWD 響應式微調，確保在小螢幕上不會爆開 */
-    @media (max-width: 650px) {
-        .sm-stage {
-            transform: scale(0.6); /* 如果螢幕太小，整體縮小 0.6 倍 */
-            transform-origin: center center;
-        }
+    .cab-inner {
+        border: 0.2vmin solid #7a6018;
+        border-radius: 1.8vmin 1.8vmin 1vmin 1vmin;
+        overflow: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
     }
-    </style>
-</head>
 
-<body>
-
-<div class="sm-wrap">
-  <h2 class="sr-only">Chungli Toastmasters 世界旅遊拉霸機</h2>
-  <div class="sm-stage">
-    <div class="cab">
-      <div class="cab-inner">
-        <div class="cpanel tp">
-          <div class="pdeco">✦ &nbsp; ✦ &nbsp; ✦</div>
-          <hr class="pline">
-          <div class="ptit">CHUNGLI</div>
-          <div class="psub">TOASTMASTERS</div>
-          <hr class="pline">
-          <div class="pdeco">✦ &nbsp; ✦ &nbsp; ✦</div>
-        </div>
-        <div class="rsect">
-          <div class="rframe">
-            <div class="rframe-inner">
-              <div class="rwin" id="reelWindow">
-                <div class="sline"></div>
-                <div class="rtrack" id="reelTrack">
-                  <div class="ritem">
-                    <span class="ren">— — —</span>
-                    <span class="rzh">拉右側把手</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="scnt" id="spinCount"></div>
-        </div>
-        <div class="cpanel bp">
-          <div class="pdeco">✦ &nbsp; ✦ &nbsp; ✦</div>
-          <hr class="pline">
-          <div class="ptit">CHUNGLI</div>
-          <div class="psub">TOASTMASTERS</div>
-          <hr class="pline">
-          <div class="pdeco">✦ &nbsp; ✦ &nbsp; ✦</div>
-        </div>
-      </div>
-    </div>
-    <div class="lmount"></div>
-    <div class="larm" id="leverArm" onclick="spin()">
-      <div class="lrod"></div>
-      <div class="lball"></div>
-      <div class="lstub"></div>
-    </div>
-  </div>
-</div>
-
-<script>
-// JavaScript 邏輯保持不變，同步更新 itemHeight
-const countries=[
-  {en:"JAPAN",zh:"日本"},{en:"HONG KONG",zh:"香港"},{en:"SOUTH KOREA",zh:"韓國"},
-  {en:"MACAU",zh:"澳門"},{en:"THAILAND",zh:"泰國"},{en:"VIETNAM",zh:"越南"},
-  {en:"MALAYSIA",zh:"馬來西亞"},{en:"INDONESIA",zh:"印尼"},{en:"PHILIPPINES",zh:"菲律賓"},
-  {en:"FRANCE",zh:"法國"},{en:"ITALY",zh:"義大利"},{en:"SPAIN",zh:"西班牙"},
-  {en:"SWITZERLAND",zh:"瑞士"},{en:"NETHERLANDS",zh:"荷蘭"},{en:"TURKEY",zh:"土耳其"},
-  {en:"EGYPT",zh:"埃及"},{en:"SOUTH AFRICA",zh:"南非"},{en:"NORWAY",zh:"挪威"},
-  {en:"AUSTRALIA",zh:"澳洲"},{en:"NEW ZEALAND",zh:"紐西蘭"},{en:"USA",zh:"美國"},
-  {en:"UK",zh:"英國"},{en:"CZECH REPUBLIC",zh:"捷克"},{en:"PORTUGAL",zh:"葡萄牙"},
-  {en:"BRAZIL",zh:"巴西"},{en:"MEXICO",zh:"墨西哥"},{en:"PERU",zh:"秘魯"}
-];
-
-let spinning=false,spinCount=0,lastResult=null,audioCtx=null;
-// 修改：同步更新 JavaScript 中的項目高度
-const ITEM_HEIGHT = 135; 
-
-function getAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
-
-function playTick(freq,vol){
-  try{const ctx=getAudio(),o=ctx.createOscillator(),g=ctx.createGain();
-  o.connect(g);g.connect(ctx.destination);
-  o.type='square';o.frequency.setValueAtTime(freq||400,ctx.currentTime);
-  g.gain.setValueAtTime(vol||0.06,ctx.currentTime);
-  g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.07);
-  o.start(ctx.currentTime);o.stop(ctx.currentTime+0.07);}catch(e){}
-}
-
-function playWin(){
-  try{const ctx=getAudio();
-  [523,659,784,1047].forEach((f,i)=>{
-    const o=ctx.createOscillator(),g=ctx.createGain();
-    o.connect(g);g.connect(ctx.destination);o.type='triangle';
-    const t=ctx.currentTime+i*0.13;
-    o.frequency.setValueAtTime(f,t);
-    g.gain.setValueAtTime(0,t);
-    g.gain.linearRampToValueAtTime(0.15,t+0.04);
-    g.gain.exponentialRampToValueAtTime(0.0001,t+0.28);
-    o.start(t);o.stop(t+0.28);
-  });}catch(e){}
-}
-
-function buildReel(final,extra){
-  const track=document.getElementById('reelTrack');
-  track.innerHTML='';
-  const pool=[...countries,...countries,...countries].sort(()=>Math.random()-.5);
-  const items=[...pool.slice(0,extra),final,...pool.slice(0,3)];
-  items.forEach(c=>{
-    const d=document.createElement('div');
-    d.className='ritem';
-    d.innerHTML=`<span class="ren">${c.en}</span><span class="rzh">${c.zh}</span>`;
-    track.appendChild(d);
-  });
-}
-
-function spin(){
-  if(spinning)return;
-  spinning=true;spinCount++;
-  const arm=document.getElementById('leverArm');
-  arm.classList.add('off');
-
-  let pool=[...countries];
-  if(lastResult&&pool.length>1)pool=pool.filter(c=>c.en!==lastResult.en);
-  const final=pool[Math.floor(Math.random()*pool.length)];
-  lastResult=final;
-
-  arm.style.transition='transform 0.18s ease-in';
-  arm.style.transform='rotate(115deg)';
-
-  setTimeout(()=>{
-    const T=40,track=document.getElementById('reelTrack'),itemH=ITEM_HEIGHT;
-    buildReel(final,T);
-    track.style.transition='none';
-    track.style.transform='translateY(0px)';
-
-    let tickInt=65,elapsed=0;
-    function doTick(){
-      playTick(280+Math.random()*160,elapsed>3200?0.11:0.065);
-      tickInt=elapsed<3200?55+Math.random()*45:80+elapsed*0.06;
-      elapsed+=tickInt;
-      if(elapsed<4700)setTimeout(doTick,tickInt);
+    /* 控制面板 (Top & Bottom) */
+    .cpanel {
+        background:#0b1103;
+        text-align:center;
+        /* 修改：Panel 高度改為相對比例 */
+        flex: 0 0 22%; 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
-    setTimeout(doTick,30);
-
-    const phases=[
-      {d:600,e:'cubic-bezier(0.4,0,1,1)',y:-(itemH*8)},
-      {d:2200,e:'linear',y:-(itemH*(T-6))},
-      {d:800,e:'cubic-bezier(0,0,0.2,1)',y:-(itemH*T)},
-      {d:380,e:'cubic-bezier(0.34,1.56,0.64,1)',y:-(itemH*T)+10},
-      {d:180,e:'ease-in-out',y:-(itemH*T)}
-    ];
-
-    function runPhase(i){
-      if(i>=phases.length){endSpin(final);return;}
-      const p=phases[i];
-      setTimeout(()=>{
-        track.style.transition=`transform ${p.d}ms ${p.e}`;
-        track.style.transform=`translateY(${p.y}px)`;
-        setTimeout(()=>runPhase(i+1),p.d);
-      },10);
+    
+    .cpanel.tp { border-bottom: 0.4vmin solid #c9a030; }
+    .cpanel.bp { border-top: 0.4vmin solid #c9a030; }
+    
+    /* 修改：面板文字大小全部改為相對單位 (vmin) */
+    .pdeco { font-size: 1.8vmin; color: #c9a030; letter-spacing: 0.8vmin; line-height: 1.5; }
+    .pline { border: none; border-top: 0.2vmin solid #5a4808; margin: 0.5vh 10%; width: 80%; }
+    .ptit { font-family: 'Playfair Display', serif; font-size: 6vmin; font-weight: 900; color: #f2c828; letter-spacing: 0.6vmin; line-height: 1.1; }
+    .psub { font-family: 'Playfair Display', serif; font-size: 2.2vmin; font-weight: 700; font-style: italic; color: #c9a030; letter-spacing: 1.2vmin; }
+    
+    /* 轉盤區域 (Reel Section) */
+    .rsect {
+        flex: 1; /* 佔滿剩餘高度 */
+        padding: 2vmin;
+        background: #162309;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5vmin;
     }
-    requestAnimationFrame(()=>runPhase(0));
-  },200);
-}
 
-function endSpin(country){
-  spinning=false;
-  playWin();
-  const track=document.getElementById('reelTrack');
-  const items=track.querySelectorAll('.ritem');
-  if(items[40])items[40].classList.add('hi');
-  document.getElementById('spinCount').textContent=`已抽 ${spinCount} 次`;
-  const arm=document.getElementById('leverArm');
-  setTimeout(()=>{
-    arm.style.transition='transform 0.55s cubic-bezier(0.34,1.56,0.64,1)';
-    arm.style.transform='rotate(0deg)';
-    setTimeout(()=>arm.classList.remove('off'),600);
-  },400);
-}
-</script>
-</body>
-</html>
+    .rframe { background: #c9a030; border-radius: 1vmin; padding: 0.6vmin; width: 90%; }
+    .rframe-inner { background: #b8860c; border-radius: 0.8vmin; padding: 0.4vmin; }
+    
+    /* 修改：轉盤視窗高度也設為相對比例 */
+    .rwin {
+        background: #f0ebd6;
+        border-radius: 0.5vmin;
+        height: 20vh; /* 轉盤本身佔螢幕高度的 1/5 */
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+    }
+
+    /* 修改：遮罩效果高度同步調整 */
+    .rwin::before { content:''; position:absolute; top:0; left:0; right:0; height:5vh; background:linear-gradient(to bottom,#f0ebd6,transparent); z-index:2; pointer-events:none; }
+    .rwin::after { content:''; position:absolute; bottom:0; left:0; right:0; height:5vh; background:linear-gradient(to top,#f0ebd6,transparent); z-index:2; pointer-events:none; }
+    
+    .sline { position:absolute; left:1vmin; right:1vmin; top:50%; height:0.3vmin; background:#c9a030; transform:translateY(-50%); z-index:3; opacity:.45; }
+    
+    .rtrack { display:flex; flex-direction:column; align-items:center; position:absolute; width:100%; }
+    
+    /* 修改：Reel Item 高度與 JavaScript 中的 ITEM_HEIGHT 保持一致 (using vh) */
+    .ritem {
+        height: 20vh; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 100%;
+        text-align: center;
+        gap: 0.5vmin;
+    }
+
+    /* 修改：國家名稱字體放大，使用 vmin 確保縮放平衡 */
+    .ren { font-family: 'Playfair Display', serif; font-size: 7vmin; font-weight: 900; color: #1a1205; line-height: 1; }
+    .rzh { font-family: 'Space Mono', monospace; font-size: 2.5vmin; color: #888; letter-spacing: 0.2vmin; }
+    .ritem.hi .ren { color: #8b1800; }
+    .ritem.hi .rzh { color: #b8960c; }
+    
+    .scnt { font-family: 'Space Mono', monospace; font-size: 2.2vmin; color: #c9a030; letter-spacing: 0.4vmin; min-height: 3vmin; margin-top: 1vh; }
+    
+    /* 修改：把手基座與桿子也改
