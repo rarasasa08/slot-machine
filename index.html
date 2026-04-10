@@ -29,9 +29,7 @@
 
     .sm-stage {
         position: relative;
-        /* 設定拉霸機高度為視窗的 2/3 */
         height: 66vh; 
-        /* 寬度稍微加寬，看起來更穩重 */
         width: 55vw; 
         min-width: 450px;
         display: flex;
@@ -223,13 +221,13 @@
 <script>
 const countries=[
   {en:"JAPAN",zh:"日本"},{en:"HONG KONG",zh:"香港"},{en:"SOUTH KOREA",zh:"韓國"},
-  {en:"MACAU",zh:"加拿大"},{en:"THAILAND",zh:"泰國"},{en:"VIETNAM",zh:"越南"},
+  {en:"CANADA",zh:"加拿大"},{en:"THAILAND",zh:"泰國"},{en:"VIETNAM",zh:"越南"},
   {en:"MALAYSIA",zh:"馬來西亞"},{en:"INDONESIA",zh:"印尼"},{en:"PHILIPPINES",zh:"菲律賓"},
   {en:"FRANCE",zh:"法國"},{en:"ITALY",zh:"義大利"},{en:"SPAIN",zh:"西班牙"},
   {en:"SWITZERLAND",zh:"瑞士"},{en:"NETHERLANDS",zh:"荷蘭"},{en:"TURKEY",zh:"土耳其"},
-  {en:"EGYPT",zh:"埃及"},{en:"SOUTH AFRICA",zh:"南非"},{en:"NORWAY",zh:"德國"},
+  {en:"EGYPT",zh:"埃及"},{en:"SOUTH AFRICA",zh:"南非"},{en:"GERMANY",zh:"德國"},
   {en:"AUSTRALIA",zh:"澳洲"},{en:"NEW ZEALAND",zh:"紐西蘭"},{en:"USA",zh:"美國"},
-  {en:"UK",zh:"英國"},{en:"CZECH REPUBLIC",zh:"捷克"},{en:"PORTUGAL",zh:"肯亞"},
+  {en:"UK",zh:"英國"},{en:"CZECH",zh:"捷克"},{en:"KENYA",zh:"肯亞"},
 ];
 
 let spinning=false,spinCount=0,lastResult=null,audioCtx=null;
@@ -284,34 +282,37 @@ function spin(){
   const final=pool[Math.floor(Math.random()*pool.length)];
   lastResult=final;
 
-  arm.style.transition='transform 0.18s ease-in';
+  // 加快下壓速度
+  arm.style.transition='transform 0.1s ease-in';
   arm.style.transform='rotate(115deg)';
 
   setTimeout(()=>{
-    const T=40,track=document.getElementById('reelTrack'),itemH=getItemHeight();
+    const T=28,track=document.getElementById('reelTrack'),itemH=getItemHeight();
     buildReel(final,T);
     track.style.transition='none';
     track.style.transform='translateY(0px)';
 
-    let tickInt=65,elapsed=0;
+    // 調整聲音節奏
+    let tickInt=50,elapsed=0;
     function doTick(){
-      playTick(280+Math.random()*160,elapsed>3200?0.11:0.065);
-      tickInt=elapsed<3200?55+Math.random()*45:80+elapsed*0.06;
+      playTick(280+Math.random()*160,elapsed>2000?0.11:0.065);
+      tickInt=elapsed<1800?40+Math.random()*30:60+elapsed*0.08;
       elapsed+=tickInt;
-      if(elapsed<4700)setTimeout(doTick,tickInt);
+      if(elapsed<2600)setTimeout(doTick,tickInt);
     }
     setTimeout(doTick,30);
 
+    // 關鍵：大幅縮短各階段時間 (總計約 2.5 秒)
     const phases=[
-      {d:600,e:'cubic-bezier(0.4,0,1,1)',y:-(itemH*8)},
-      {d:2200,e:'linear',y:-(itemH*(T-6))},
-      {d:800,e:'cubic-bezier(0,0,0.2,1)',y:-(itemH*T)},
-      {d:380,e:'cubic-bezier(0.34,1.56,0.64,1)',y:-(itemH*T)+(itemH*0.1)},
-      {d:180,e:'ease-in-out',y:-(itemH*T)}
+      {d:400,e:'cubic-bezier(0.4,0,1,1)',y:-(itemH*6)},      // 加速
+      {d:1000,e:'linear',y:-(itemH*(T-6))},                 // 勻速 (原本 2200ms)
+      {d:700,e:'cubic-bezier(0,0,0.2,1)',y:-(itemH*T)},      // 減速
+      {d:350,e:'cubic-bezier(0.34,1.56,0.64,1)',y:-(itemH*T)+(itemH*0.1)}, // 回彈
+      {d:150,e:'ease-in-out',y:-(itemH*T)}                  // 定位
     ];
 
     function runPhase(i){
-      if(i>=phases.length){endSpin(final);return;}
+      if(i>=phases.length){endSpin(final, T);return;}
       const p=phases[i];
       setTimeout(()=>{
         track.style.transition=`transform ${p.d}ms ${p.e}`;
@@ -320,22 +321,22 @@ function spin(){
       },10);
     }
     requestAnimationFrame(()=>runPhase(0));
-  },200);
+  },150);
 }
 
-function endSpin(country){
+function endSpin(country, T){
   spinning=false;
   playWin();
   const track=document.getElementById('reelTrack');
   const items=track.querySelectorAll('.ritem');
-  if(items[40])items[40].classList.add('hi');
+  if(items[T])items[T].classList.add('hi');
   document.getElementById('spinCount').textContent=`已抽 ${spinCount} 次`;
   const arm=document.getElementById('leverArm');
   setTimeout(()=>{
-    arm.style.transition='transform 0.55s cubic-bezier(0.34,1.56,0.64,1)';
+    arm.style.transition='transform 0.4s cubic-bezier(0.34,1.56,0.64,1)';
     arm.style.transform='rotate(0deg)';
-    setTimeout(()=>arm.classList.remove('off'),600);
-  },400);
+    setTimeout(()=>arm.classList.remove('off'),400);
+  },300);
 }
 </script>
 </body>
