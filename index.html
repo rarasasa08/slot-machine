@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>Chungli Toastmasters Slot Machine</title>
+    <title>Chungli Toastmasters Slot Machine (Large)</title>
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,900&family=Space+Mono:wght@400;700&display=swap');
 
@@ -14,13 +14,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        /* 使用復古世界地圖背景 */
-        background-image: url('https://img.freepik.com/free-photo/vintage-world-map-background-high-quality-texture_53876-133644.jpg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-color: #f0ebd6; /* 備用背景色 */
+        /* 修改：更換為純墨綠色背景 */
+        background-color: #0a2e1f; 
         overflow: hidden;
+        font-family: 'Space Mono', monospace;
     }
 
     /* 隱藏標題文字 */
@@ -32,56 +29,81 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        /* 增加一點邊距確保在手機上不貼邊 */
+        padding: 20px;
     }
 
+    /* 修改：放大 Stage 尺寸 */
     .sm-stage {
         position: relative;
-        width: 410px;
-        height: 400px;
+        width: 615px; /* 原 410px * 1.5 */
+        height: 600px; /* 原 400px * 1.5 */
     }
 
+    /* 修改：放大 Cabinet 尺寸 */
     .cab {
         position: absolute;
-        top: 60px;
+        top: 90px; /* 原 60px * 1.5 */
         left: 0;
-        width: 252px;
+        width: 378px; /* 原 252px * 1.5 */
         background: #131d06;
-        border: 3px solid #c9a030;
-        border-radius: 10px 10px 7px 7px;
+        border: 4.5px solid #c9a030; /* 邊框也同步加粗 */
+        border-radius: 15px 15px 10px 10px;
         overflow: hidden;
         /* 強化立體陰影 */
-        box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+        box-shadow: 0 45px 90px rgba(0,0,0,0.8);
     }
 
-    .cab-inner{border:1px solid #7a6018;border-radius:7px 7px 4px 4px;overflow:hidden;}
+    .cab-inner{border:1.5px solid #7a6018;border-radius:10px 10px 6px 6px;overflow:hidden;}
     .cpanel{background:#0b1103;text-align:center;}
-    .cpanel.tp{padding:8px 10px 7px;border-bottom:2px solid #c9a030;}
-    .cpanel.bp{padding:7px 10px 10px;border-top:2px solid #c9a030;}
-    .pdeco{font-family:'Space Mono',monospace;font-size:9px;color:#c9a030;letter-spacing:4px;line-height:1.8;}
-    .pline{border:none;border-top:1px solid #5a4808;margin:3px 12px;}
-    .ptit{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:#f2c828;letter-spacing:3px;line-height:1.05;}
-    .psub{font-family:'Playfair Display',serif;font-size:11px;font-weight:700;font-style:italic;color:#c9a030;letter-spacing:5px;}
-    .rsect{padding:12px 14px;background:#162309;display:flex;flex-direction:column;align-items:center;gap:8px;}
-    .rframe{background:#c9a030;border-radius:5px;padding:3px;width:100%;}
-    .rframe-inner{background:#b8860c;border-radius:3px;padding:2px;}
-    .rwin{background:#f0ebd6;border-radius:2px;height:90px;overflow:hidden;position:relative;width:100%;}
-    .rwin::before{content:'';position:absolute;top:0;left:0;right:0;height:22px;background:linear-gradient(to bottom,#f0ebd6,transparent);z-index:2;pointer-events:none;}
-    .rwin::after{content:'';position:absolute;bottom:0;left:0;right:0;height:22px;background:linear-gradient(to top,#f0ebd6,transparent);z-index:2;pointer-events:none;}
-    .sline{position:absolute;left:6px;right:6px;top:50%;height:1px;background:#c9a030;transform:translateY(-50%);z-index:3;opacity:.45;}
+    
+    /* 修改：調整 Panel 內距 */
+    .cpanel.tp{padding:12px 15px 10px;border-bottom:3px solid #c9a030;}
+    .cpanel.bp{padding:10px 15px 15px;border-top:3px solid #c9a030;}
+    
+    /* 修改：放大字體與間距 */
+    .pdeco{font-family:'Space Mono',monospace;font-size:13px;color:#c9a030;letter-spacing:6px;line-height:1.8;}
+    .pline{border:none;border-top:1.5px solid #5a4808;margin:4.5px 18px;}
+    .ptit{font-family:'Playfair Display',serif;font-size:39px;font-weight:900;color:#f2c828;letter-spacing:4.5px;line-height:1.05;}
+    .psub{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;font-style:italic;color:#c9a030;letter-spacing:7.5px;}
+    
+    /* 修改：調整轉盤區域 */
+    .rsect{padding:18px 21px;background:#162309;display:flex;flex-direction:column;align-items:center;gap:12px;}
+    .rframe{background:#c9a030;border-radius:7.5px;padding:4.5px;width:100%;}
+    .rframe-inner{background:#b8860c;border-radius:4.5px;padding:3px;}
+    
+    /* 修改：放大轉盤視窗高度 */
+    .rwin{background:#f0ebd6;border-radius:3px;height:135px;overflow:hidden;position:relative;width:100%;}
+    .rwin::before{content:'';position:absolute;top:0;left:0;right:0;height:33px;background:linear-gradient(to bottom,#f0ebd6,transparent);z-index:2;pointer-events:none;}
+    .rwin::after{content:'';position:absolute;bottom:0;left:0;right:0;height:33px;background:linear-gradient(to top,#f0ebd6,transparent);z-index:2;pointer-events:none;}
+    .sline{position:absolute;left:9px;right:9px;top:50%;height:1.5px;background:#c9a030;transform:translateY(-50%);z-index:3;opacity:.45;}
     .rtrack{display:flex;flex-direction:column;align-items:center;position:absolute;width:100%;}
-    .ritem{height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;width:100%;text-align:center;gap:2px;}
-    .ren{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:#1a1205;line-height:1;}
-    .rzh{font-family:'Space Mono',monospace;font-size:10px;color:#888;letter-spacing:1px;}
+    
+    /* 修改：調整轉盤項目高度與字體 */
+    .ritem{height:135px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;width:100%;text-align:center;gap:3px;}
+    .ren{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:#1a1205;line-height:1;}
+    .rzh{font-family:'Space Mono',monospace;font-size:15px;color:#888;letter-spacing:1.5px;}
     .ritem.hi .ren{color:#8b1800;}
     .ritem.hi .rzh{color:#b8960c;}
-    .scnt{font-family:'Space Mono',monospace;font-size:10px;color:#c9a030;letter-spacing:2px;min-height:14px;}
-    .lmount{position:absolute;top:210px;left:249px;width:14px;height:26px;background:#8a7010;border-radius:0 3px 3px 0;transform:translateY(-50%);border-right:2px solid #c9a030;border-top:1px solid #c9a030;border-bottom:1px solid #c9a030;}
-    .larm{position:absolute;top:210px;left:261px;transform-origin:0 0;transform:rotate(0deg);transition:transform 0.15s ease-in;cursor:pointer;}
-    .lrod{position:absolute;top:-128px;left:-4px;width:8px;height:128px;background:#1c1c1c;border-radius:3px 3px 0 0;}
-    .lball{position:absolute;top:-164px;left:-17px;width:34px;height:34px;border-radius:50%;background:#c81000;border:3px solid #ee3311;transition:background .1s;}
-    .lstub{position:absolute;top:0;left:-4px;width:8px;height:14px;background:#1c1c1c;border-radius:0 0 3px 3px;}
+    
+    .scnt{font-family:'Space Mono',monospace;font-size:15px;color:#c9a030;letter-spacing:3px;min-height:21px;margin-top: 10px;}
+    
+    /* 修改：同步放大把手與基座 */
+    .lmount{position:absolute;top:315px;left:373px;width:21px;height:39px;background:#8a7010;border-radius:0 4.5px 4.5px 0;transform:translateY(-50%);border-right:3px solid #c9a030;border-top:1.5px solid #c9a030;border-bottom:1.5px solid #c9a030;}
+    .larm{position:absolute;top:315px;left:391px;transform-origin:0 0;transform:rotate(0deg);transition:transform 0.15s ease-in;cursor:pointer;}
+    .lrod{position:absolute;top:-192px;left:-6px;width:12px;height:192px;background:#1c1c1c;border-radius:4.5px 4.5px 0 0;}
+    .lball{position:absolute;top:-246px;left:-25px;width:51px;height:51px;border-radius:50%;background:#c81000;border:4.5px solid #ee3311;transition:background .1s;}
+    .lstub{position:absolute;top:0;left:-6px;width:12px;height:21px;background:#1c1c1c;border-radius:0 0 4.5px 4.5px;}
     .larm:not(.off):hover .lball{background:#dd1500;}
     .larm.off{cursor:default;opacity:.6;}
+    
+    /* 新增：RWD 響應式微調，確保在小螢幕上不會爆開 */
+    @media (max-width: 650px) {
+        .sm-stage {
+            transform: scale(0.6); /* 如果螢幕太小，整體縮小 0.6 倍 */
+            transform-origin: center center;
+        }
+    }
     </style>
 </head>
 
@@ -136,6 +158,7 @@
 </div>
 
 <script>
+// JavaScript 邏輯保持不變，同步更新 itemHeight
 const countries=[
   {en:"JAPAN",zh:"日本"},{en:"HONG KONG",zh:"香港"},{en:"SOUTH KOREA",zh:"韓國"},
   {en:"MACAU",zh:"澳門"},{en:"THAILAND",zh:"泰國"},{en:"VIETNAM",zh:"越南"},
@@ -149,6 +172,8 @@ const countries=[
 ];
 
 let spinning=false,spinCount=0,lastResult=null,audioCtx=null;
+// 修改：同步更新 JavaScript 中的項目高度
+const ITEM_HEIGHT = 135; 
 
 function getAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
 
@@ -203,7 +228,7 @@ function spin(){
   arm.style.transform='rotate(115deg)';
 
   setTimeout(()=>{
-    const T=40,track=document.getElementById('reelTrack'),itemH=90;
+    const T=40,track=document.getElementById('reelTrack'),itemH=ITEM_HEIGHT;
     buildReel(final,T);
     track.style.transition='none';
     track.style.transform='translateY(0px)';
