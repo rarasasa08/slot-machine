@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>選擇性障礙愛吃女 - Y2K美食拉霸</title>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Pacifico&display=swap');
+
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* Y2K 雷射流動背景 */
+        background: linear-gradient(135deg, #fce4ec 0%, #e1f5fe 25%, #f3e5f5 50%, #fff9c4 75%, #fce4ec 100%);
+        background-size: 400% 400%;
+        animation: laserGradient 12s ease infinite;
+        overflow: hidden;
+        font-family: 'DotGothic16', sans-serif;
+    }
+
+    @keyframes laserGradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .sm-stage {
+        position: relative;
+        height: 70vh; 
+        width: 60vw; /* 稍微再寬一點點以容納長菜名 */
+        min-width: 480px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .cab {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: #ffdeeb;
+        border: 1vmin solid #ff00ff;
+        border-radius: 3vmin;
+        box-shadow: 0 0 40px rgba(255, 0, 255, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.8);
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cab-inner {
+        border: 0.5vmin solid #ffffff;
+        border-radius: 2.5vmin;
+        overflow: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cpanel {
+        background: #ff00ff;
+        text-align: center;
+        flex: 0 0 22%; 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+    
+    .pdeco { font-size: 2vmin; color: #fff; letter-spacing: 1vmin; }
+    
+    .ptit { 
+        font-size: 5.5vmin; 
+        font-weight: bold; 
+        color: #fff; 
+        letter-spacing: 0.3vmin; 
+        text-shadow: 3px 3px #00e5ff;
+    }
+
+    .psub { 
+        font-family: 'Pacifico', cursive; 
+        font-size: 3vmin; 
+        color: #fff; 
+    }
+    
+    .rsect {
+        flex: 1;
+        padding: 2vmin;
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1vmin;
+    }
+
+    .rframe { 
+        background: linear-gradient(to bottom, #e0e0e0, #ffffff, #e0e0e0); 
+        border: 0.6vmin solid #ff00ff;
+        border-radius: 2vmin; 
+        padding: 0.8vmin; 
+        width: 92%; 
+    }
+
+    .rwin {
+        background: #000;
+        height: 22vh;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+        border-radius: 1vmin;
+    }
+
+    .rwin::before { content:''; position:absolute; top:0; left:0; right:0; height:6vh; background:linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); z-index:2; }
+    .rwin::after { content:''; position:absolute; bottom:0; left:0; right:0; height:6vh; background:linear-gradient(to top, rgba(0,0,0,0.8), transparent); z-index:2; }
+    
+    .sline { position:absolute; left:0; right:0; top:50%; height:0.4vmin; background:rgba(0, 229, 255, 0.5); transform:translateY(-50%); z-index:3; }
+    
+    .rtrack { display:flex; flex-direction:column; align-items:center; position:absolute; width:100%; }
+    
+    .ritem {
+        height: 22vh; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .ren { font-size: 6.5vmin; font-weight: bold; color: #00e5ff; line-height: 1.1; text-shadow: 0 0 10px #00e5ff; }
+    .ritem.hi .ren { color: #ff00ff; text-shadow: 0 0 20px #ff00ff; animation: blink 0.4s infinite; }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.8; }
+    }
+    
+    .scnt { font-size: 2.2vmin; color: #ff00ff; margin-top: 1vh; font-weight: bold; }
+    
+    .lmount {
+        position: absolute;
+        top: 50%;
+        right: -3vmin; 
+        width: 3.5vmin;
+        height: 8vh;
+        background: #ff00ff;
+        border-radius: 0 1.5vmin 1.5vmin 0;
+        transform: translateY(-50%);
+        z-index: 1;
+    }
+
+    .larm {
+        position: absolute;
+        top: 50%;
+        right: -7vmin; 
+        transform-origin: 0 0;
+        cursor: pointer;
+        z-index: 3;
+    }
+
+    .lrod {
+        position: absolute;
+        top: -28vh; 
+        left: -1vmin;
+        width: 2.2vmin;
+        height: 28vh;
+        background: linear-gradient(to right, #e0e0e0, #ffffff, #e0e0e0);
+        border-radius: 1vmin;
+    }
+
+    .lball {
+        position: absolute;
+        top: -36vh; 
+        left: -4.5vmin;
+        width: 9.5vmin;
+        height: 9.5vmin;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 30%, #ff80ff, #ff00ff);
+        box-shadow: 0 0 25px rgba(255, 0, 255, 0.7);
+    }
+
+    .lstub { position:absolute; top:0; left:-1vmin; width:2.2vmin; height:4vh; background:#ff00ff; }
+    .larm.off { cursor: default; opacity: .6; }
+    </style>
+</head>
+
+<body>
+
+<div class="sm-stage">
+    <div class="cab">
+      <div class="cab-inner">
+        <div class="cpanel tp">
+          <div class="pdeco">💕 ✨ 💕</div>
+          <div class="ptit">選擇性障礙</div>
+          <div class="psub">愛吃女</div>
+        </div>
+
+        <div class="rsect">
+          <div class="rframe">
+            <div class="rframe-inner">
+              <div class="rwin" id="reelWindow">
+                <div class="sline"></div>
+                <div class="rtrack" id="reelTrack">
+                  <div class="ritem">
+                    <span class="ren">今天吃什麼？</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="scnt" id="spinCount"></div>
+        </div>
+
+        <div class="cpanel bp">
+          <div class="ptit">Y2K FOODIE</div>
+          <div class="pdeco">🌈 🎀 🌈</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lmount"></div>
+    <div class="larm" id="leverArm" onclick="spin()">
+      <div class="lrod"></div>
+      <div class="lball"></div>
+      <div class="lstub"></div>
+    </div>
+</div>
+
+<script>
+// 你提供的 30 項美食名單
+const foodList=[
+  "牛肉燴飯", "咖哩雞肉飯", "滷肉飯配滷蛋", "雞腿便當", "排骨便當",
+  "燒肉便當", "三寶飯", "焢肉飯", "牛肉炒飯", "蝦仁炒飯",
+  "紅燒牛肉麵", "番茄牛肉麵", "榨菜肉絲麵", "餛飩麵", "麻醬麵配貢丸湯",
+  "乾麵配餛飩湯", "什錦炒麵", "海鮮烏龍麵", "鍋貼配酸辣湯", "水餃配玉米濃湯",
+  "豬排丼飯", "親子丼", "韓式石鍋拌飯", "泡菜豬肉鍋", "沙茶牛肉鍋",
+  "牛排套餐", "炸豬排定食", "煎鮭魚定食", "漢堡薯條套餐", "炸雞飯套餐"
+];
+
+let spinning=false,spinCount=0,lastResult=null,audioCtx=null;
+
+function getItemHeight() { return window.innerHeight * 0.22; }
+function getAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
+
+function playTick(freq,vol){
+  try{const ctx=getAudio(),o=ctx.createOscillator(),g=ctx.createGain();
+  o.connect(g);g.connect(ctx.destination);
+  o.type='sine';o.frequency.setValueAtTime(freq||600,ctx.currentTime);
+  g.gain.setValueAtTime(vol||0.05,ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.1);
+  o.start(ctx.currentTime);o.stop(ctx.currentTime+0.1);}catch(e){}
+}
+
+function playWin(){
+  try{const ctx=getAudio();
+  [659,880,1046,1318].forEach((f,i)=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);o.type='triangle';
+    const t=ctx.currentTime+i*0.1;
+    o.frequency.setValueAtTime(f,t);
+    g.gain.setValueAtTime(0.1,t);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+0.3);
+    o.start(t);o.stop(t+0.3);
+  });}catch(e){}
+}
+
+function buildReel(final,extra){
+  const track=document.getElementById('reelTrack');
+  track.innerHTML='';
+  const pool=[...foodList,...foodList].sort(()=>Math.random()-.5);
+  const items=[...pool.slice(0,extra),final,...pool.slice(0,3)];
+  items.forEach(c=>{
+    const d=document.createElement('div');
+    d.className='ritem';
+    d.innerHTML=`<span class="ren">${c}</span>`;
+    track.appendChild(d);
+  });
+}
+
+function spin(){
+  if(spinning)return;
+  spinning=true;spinCount++;
+  const arm=document.getElementById('leverArm');
+  arm.classList.add('off');
+
+  let pool=[...foodList];
+  if(lastResult&&pool.length>1)pool=pool.filter(c=>c!==lastResult);
+  const final=pool[Math.floor(Math.random()*pool.length)];
+  lastResult=final;
+
+  arm.style.transition='transform 0.2s ease-in';
+  arm.style.transform='rotate(110deg)';
+
+  setTimeout(()=>{
+    const T=40,track=document.getElementById('reelTrack'),itemH=getItemHeight();
+    buildReel(final,T);
+    track.style.transition='none';
+    track.style.transform='translateY(0px)';
+
+    let tickInt=60,elapsed=0;
+    function doTick(){
+      playTick(500+Math.random()*300, 0.05);
+      tickInt=elapsed<3000?50+Math.random()*40:70+elapsed*0.05;
+      elapsed+=tickInt;
+      if(elapsed<4500)setTimeout(doTick,tickInt);
+    }
+    setTimeout(doTick,30);
+
+    const phases=[
+      {d:600,e:'cubic-bezier(0.4,0,1,1)',y:-(itemH*8)},
+      {d:2000,e:'linear',y:-(itemH*(T-6))},
+      {d:1000,e:'cubic-bezier(0,0,0.2,1)',y:-(itemH*T)},
+      {d:400,e:'cubic-bezier(0.34,1.5,0.64,1)',y:-(itemH*T)+(itemH*0.1)},
+      {d:200,e:'ease-in-out',y:-(itemH*T)}
+    ];
+
+    function runPhase(i){
+      if(i>=phases.length){endSpin(final);return;}
+      const p=phases[i];
+      setTimeout(()=>{
+        track.style.transition=`transform ${p.d}ms ${p.e}`;
+        track.style.transform=`translateY(${p.y}px)`;
+        setTimeout(()=>runPhase(i+1),p.d);
+      },10);
+    }
+    requestAnimationFrame(()=>runPhase(0));
+  },200);
+}
+
+function endSpin(food){
+  spinning=false;
+  playWin();
+  const track=document.getElementById('reelTrack');
+  const items=track.querySelectorAll('.ritem');
+  if(items[40])items[40].classList.add('hi');
+  document.getElementById('spinCount').textContent=`今天第 ${spinCount} 次掙扎`;
+  const arm=document.getElementById('leverArm');
+  setTimeout(()=>{
+    arm.style.transition='transform 0.5s cubic-bezier(0.34,1.5,0.64,1)';
+    arm.style.transform='rotate(0deg)';
+    setTimeout(()=>arm.classList.remove('off'),600);
+  },400);
+}
+</script>
+</body>
+</html>
