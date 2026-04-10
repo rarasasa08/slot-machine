@@ -51,11 +51,16 @@
     .lstub { position:absolute; top:0; left:-1vmin; width:2vmin; height:3vh; background:#1c1c1c; }
     .larm.off { cursor: default; opacity: .6; }
     
-    /* 署名樣式 */
+    /* 修改：署名置中樣式 */
     .footer {
-        position: absolute; bottom: 20px; right: 30px;
-        font-family: 'Space Mono', monospace; font-size: 14px;
-        color: rgba(201, 160, 48, 0.6); letter-spacing: 2px;
+        position: absolute; 
+        bottom: 20px; 
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: 'Space Mono', monospace; 
+        font-size: 14px;
+        color: rgba(201, 160, 48, 0.5); 
+        letter-spacing: 3px;
     }
     </style>
 </head>
@@ -140,7 +145,10 @@ function spin(){
 function endSpin(country, T){
   spinning=false; playWin();
   const track=document.getElementById('reelTrack'); const items=track.querySelectorAll('.ritem'); if(items[T])items[T].classList.add('hi');
+  
+  // 修改：移除剩餘國家顯示，只保留已抽次數
   document.getElementById('spinCount').textContent = `已抽 ${spinCount} 次`;
+  
   const arm=document.getElementById('leverArm'); arm.style.transition='transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; arm.style.transform='rotate(0deg)';
   setTimeout(()=>arm.classList.remove('off'), 200);
 }
